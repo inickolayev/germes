@@ -1,0 +1,14 @@
+version: '3.4'
+
+services:
+  germes:
+    image: ${DOCKER_REGISTRY-}germes
+    build:
+      context: .
+      dockerfile: Germes/Dockerfile
+    networks:
+      - docker-network
+
+networks:
+  docker-network:
+     driver: bridge
