@@ -3,9 +3,11 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.36
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes", "Germes\Germes.csproj", "{F731A3E4-6B1E-46A8-987D-111AED8F7C00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germes", "Germes\Germes.csproj", "{F731A3E4-6B1E-46A8-987D-111AED8F7C00}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{05AB90E7-21BF-4967-8637-08CC9741DF1B}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ngrok.Adapter", "Ngrok.Adapter\Ngrok.Adapter.csproj", "{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -21,6 +23,10 @@ Global
 		{05AB90E7-21BF-4967-8637-08CC9741DF1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05AB90E7-21BF-4967-8637-08CC9741DF1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05AB90E7-21BF-4967-8637-08CC9741DF1B}.Release|Any CPU.Build.0 = Release|Any CPU
+		{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE

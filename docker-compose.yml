@@ -9,6 +9,12 @@ services:
     networks:
       - docker-network
 
+  ngrok:
+    image: wernight/ngrok
+    container_name: ngrok
+    networks:
+      - docker-network
+
 networks:
   docker-network:
      driver: bridge

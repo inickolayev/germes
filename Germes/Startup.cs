@@ -16,6 +16,7 @@ using Telegram.Bot;
 using MediatR;
 using Germes.Services;
 using Microsoft.OpenApi.Models;
+using Ngrok.Adapter.Service;
 
 namespace Germes
 {
@@ -44,12 +45,14 @@ namespace Germes
             });
 
             // Settings
-            services.AddSingleton<BotSettings>(_botSettings);
+            services.AddSingleton(_botSettings);
 
             // Services
+            services.AddHostedService<InitService>();
+            services.AddSingleton<IBotService, BotService>();
+            services.AddSingleton<INgrokService>(s => new NgrokService(_botSettings.NgrokHost));
             services.AddScoped(serv => new TelegramBotClient(_botSettings.Token));
             services.AddScoped<IApplicationInfoService, ApplicationInfoService>();
-            services.AddHostedService<InitService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

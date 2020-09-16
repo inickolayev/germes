@@ -11,3 +11,11 @@ services:
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
+
+  ngrok:
+    environment:
+      - NGROK_AUTH=1gT6fH7Bmv3Kl4QvsI0o8mKTFD8_3fdQST1rNvU1tLDgFH4rM
+      - NGROK_LOOK_DOMAIN=germes
+      - NGROK_DEBUG=true
+    ports:
+      - "6020:4040"

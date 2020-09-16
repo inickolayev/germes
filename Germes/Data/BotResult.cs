@@ -5,9 +5,8 @@ using System.Threading.Tasks;
 
 namespace Germes.Data
 {
-    public class BotSettings
+    public class BotResult
     {
-        public string Token { get; set; }
-        public string NgrokHost { get; set; }
+        public string Text { get; set; }
     }
 }

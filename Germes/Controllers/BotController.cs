@@ -3,6 +3,10 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Germes.Data;
+using Germes.Data.Requests;
+using Germes.Extensions;
+using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Telegram.Bot;
@@ -15,11 +19,13 @@ namespace Germes.Controllers
     {
         private readonly ILogger<BotController> _logger;
         private readonly TelegramBotClient _client;
+        private readonly IMediator _mediator;
 
-        public BotController(ILogger<BotController> logger, TelegramBotClient client)
+        public BotController(ILogger<BotController> logger, TelegramBotClient client, IMediator mediator)
         {
             _logger = logger;
             _client = client;
+            _mediator = mediator;
         }
 
         [HttpPost]
@@ -35,9 +41,17 @@ namespace Germes.Controllers
 
         private async Task HandleMessageAsync(Update update, CancellationToken token)
         {
-            await _client.SendTextMessageAsync(update.Message.Chat.Id, $"Принял! {update.Message.Text}", cancellationToken: token);
+            var mess = new BotMessage
+            {
+                Text = update.Message.Text
+            };
+            var chatId = update.Message.Chat.Id;
+            var res = await _mediator.SendSafe<RequestNewMessage, BotResult>(new RequestNewMessage { Message = mess }, token);
+            if (res.IsSuccess)
+                await _client.SendTextMessageAsync(chatId, res.Result.Text, cancellationToken: token);
+            else
+                await _client.SendTextMessageAsync(chatId, $"Упс, что-то пошло не так...", cancellationToken: token);
         }
-
 
         private async Task HandleEditedMessageAsync(Update update, CancellationToken token)
         {
