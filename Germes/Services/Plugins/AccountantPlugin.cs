@@ -33,11 +33,14 @@ namespace Germes.Services.Plugins
 
         public async Task<OperationResult<BotResult>> HandleAsync(Session session, BotMessage message, CancellationToken token)
         {
+            // TODO: изменить логику работы
+            // логика сейчас наиболее простая: парсим строку, берем второе слово и читаем из него расход
             var text = message.Text;
             var cost = Convert.ToDecimal(text.Split(' ')[1]);
             var expense = new ExpenseModel
             {
                 Cost = cost,
+                Date = DateTime.Now
             };
 
             var expenseAddRes = await _service.AddAsync(session, expense, token);

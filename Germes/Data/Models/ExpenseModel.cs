@@ -15,6 +15,10 @@ namespace Germes.Data.Models
         /// </summary>
         public decimal Cost { get; set; }
         /// <summary>
+        ///     Дата создания расхода
+        /// </summary>
+        public DateTime Date { get; set; }
+        /// <summary>
         ///     Категория рассхода
         /// </summary>
         public ExpenseCategoryModel Category { get; set; }
