@@ -5,6 +5,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Germes.Data;
 using Germes.Data.Requests;
+using Germes.Data.Results;
 using Germes.Extensions;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
@@ -43,6 +44,7 @@ namespace Germes.Controllers
         {
             var mess = new BotMessage
             {
+                ChatId = update.Message.Chat.Id.ToString(),
                 Text = update.Message.Text
             };
             var chatId = update.Message.Chat.Id;

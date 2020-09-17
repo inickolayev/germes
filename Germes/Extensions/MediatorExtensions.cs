@@ -11,17 +11,32 @@ namespace Germes.Extensions
     public static class MediatorExtensions
     {
         public static async Task<OperationResult<TResult>> SendSafe<TRequest, TResult>(this IMediator mediator, TRequest request, CancellationToken token = default)
-            where TRequest : IRequest<TResult>
+            where TRequest : IRequest<OperationResult<TResult>>
         {
             OperationResult<TResult> result;
             try
             {
-                var ans = await mediator.Send(request, token);
-                result = new OperationResult<TResult>(ans);
+                result = await mediator.Send(request, token);
             }
-            catch(Exception e)
+            catch (Exception e)
             {
                 result = new OperationResult<TResult>(e);
+            }
+
+            return result;
+        }
+
+        public static async Task<OperationResult> SendSafe<TRequest>(this IMediator mediator, TRequest request, CancellationToken token = default)
+            where TRequest : IRequest<OperationResult>
+        {
+            OperationResult result;
+            try
+            {
+                result = await mediator.Send(request, token);
+            }
+            catch (Exception e)
+            {
+                result = new OperationResult(e);
             }
 
             return result;

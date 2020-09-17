@@ -17,6 +17,9 @@ namespace Germes.Data.Results
         }
 
         public TResult Result { get; set; }
+
+        public OperationResult<TNewResult> To<TNewResult>()
+            => new OperationResult<TNewResult>(Error);
     }
     public class OperationResult
     {

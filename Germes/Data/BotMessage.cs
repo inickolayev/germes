@@ -11,5 +11,9 @@ namespace Germes.Data
         ///     Текст сообщения
         /// </summary>
         public string Text { get; set; }
+        /// <summary>
+        ///     Идентификатор чата
+        /// </summary>
+        public string ChatId { get; set; }
     }
 }

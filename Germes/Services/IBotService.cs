@@ -1,4 +1,5 @@
 ﻿using Germes.Data;
+using Germes.Data.Results;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -17,6 +18,6 @@ namespace Germes.Services
         /// </summary>
         /// <param name="message">Сообщение</param>
         /// <returns>Результат обработки сообщения</returns>
-        Task<BotResult> HandleNewMessageAsync(BotMessage message, CancellationToken token = default);
+        Task<OperationResult<BotResult>> HandleNewMessageAsync(BotMessage message, CancellationToken token = default);
     }
 }

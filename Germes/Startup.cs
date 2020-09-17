@@ -50,6 +50,9 @@ namespace Germes
             // Services
             services.AddHostedService<InitService>();
             services.AddSingleton<IBotService, BotService>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddSingleton<AccountantService>();
+            services.AddSingleton<ISessionService, SessionService>();
             services.AddSingleton<INgrokService>(s => new NgrokService(_botSettings.NgrokHost));
             services.AddScoped(serv => new TelegramBotClient(_botSettings.Token));
             services.AddScoped<IApplicationInfoService, ApplicationInfoService>();
