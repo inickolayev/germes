@@ -17,6 +17,9 @@ using MediatR;
 using Germes.Services;
 using Microsoft.OpenApi.Models;
 using Ngrok.Adapter.Service;
+using Germes.Pipelines;
+using Germes.Data.Requests;
+using Germes.Data.Results;
 
 namespace Germes
 {
@@ -38,24 +41,32 @@ namespace Germes
         {
             // Infrastructure
             services.AddControllers().AddNewtonsoftJson();
-            services.AddMediatR(Assembly.GetExecutingAssembly());
+            // Swagger
             services.AddSwaggerGen(c =>
             {
                 c.SwaggerDoc("v1", new OpenApiInfo { Title = "Germes API", Version = "v1" });
             });
+            // Mediator
+            services.AddMediatR(c => c.AsScoped(), Assembly.GetExecutingAssembly());
+            //services.AddTransient<IPipelineBehavior<RequestNewMessage, OperationResult<BotResult>>, SessionAddBehavior>();
+            services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
+            services.AddScoped(typeof(IPipelineBehavior<RequestNewMessage, OperationResult<BotResult>>), typeof(SessionAddBehavior));
 
             // Settings
             services.AddSingleton(_botSettings);
 
             // Services
             services.AddHostedService<InitService>();
-            services.AddSingleton<IBotService, BotService>();
-            services.AddSingleton<IUserService, UserService>();
-            services.AddSingleton<AccountantService>();
-            services.AddSingleton<ISessionService, SessionService>();
             services.AddSingleton<INgrokService>(s => new NgrokService(_botSettings.NgrokHost));
             services.AddScoped(serv => new TelegramBotClient(_botSettings.Token));
+            services.AddScoped<IBotService, BotService>();
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<ISessionManager, SessionManager>();
             services.AddScoped<IApplicationInfoService, ApplicationInfoService>();
+            services.AddScoped<IUserService, UserService>();
+            services.AddScoped<IAccountantService, AccountantService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IPluginService, PluginService>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

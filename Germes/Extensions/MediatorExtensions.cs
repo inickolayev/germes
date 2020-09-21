@@ -20,7 +20,7 @@ namespace Germes.Extensions
             }
             catch (Exception e)
             {
-                result = new OperationResult<TResult>(e);
+                result = new OperationResult<TResult>(new InternalError("Общая внутреняя ошибка", e));
             }
 
             return result;
@@ -36,7 +36,7 @@ namespace Germes.Extensions
             }
             catch (Exception e)
             {
-                result = new OperationResult(e);
+                result = new OperationResult(new InternalError("Общая внутреняя ошибка", e));
             }
 
             return result;

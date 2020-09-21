@@ -27,6 +27,6 @@ namespace Germes.Services.Plugins
         ///     Обработать сообщение
         /// </summary>
         /// <param name="message">Сообщение</param>
-        Task<OperationResult<BotResult>> HandleAsync(Session session, BotMessage message, CancellationToken token = default);
+        Task<OperationResult<BotResult>> HandleAsync(BotMessage message, CancellationToken token = default);
     }
 }

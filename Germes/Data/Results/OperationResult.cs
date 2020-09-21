@@ -10,16 +10,13 @@ namespace Germes.Data.Results
         {
             Result = result;
         }
-        public OperationResult(Exception error)
+        public OperationResult(AbstractError error)
             : base(error)
         {
             Result = default;
         }
 
         public TResult Result { get; set; }
-
-        public OperationResult<TNewResult> To<TNewResult>()
-            => new OperationResult<TNewResult>(Error);
     }
     public class OperationResult
     {
@@ -27,7 +24,7 @@ namespace Germes.Data.Results
         {
             IsSuccess = true;
         }
-        public OperationResult(Exception error)
+        public OperationResult(AbstractError error)
             : this()
         {
             IsSuccess = false;
@@ -35,6 +32,9 @@ namespace Germes.Data.Results
         }
 
         public bool IsSuccess { get; set; }
-        public Exception Error { get; set; }
+        public AbstractError Error { get; set; }
+        
+        public OperationResult<TNewResult> To<TNewResult>()
+            => new OperationResult<TNewResult>(Error);
     }
 }

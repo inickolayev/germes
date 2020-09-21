@@ -16,9 +16,5 @@ namespace Germes.Data
         ///     Пользователь
         /// </summary>
         public UserModel User{ get; set; }
-        /// <summary>
-        ///     Плагины пользователя
-        /// </summary>
-        public List<IBotPlugin> Plugins { get; set; }
     }
 }

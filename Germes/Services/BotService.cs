@@ -11,35 +11,38 @@ namespace Germes.Services
     public class BotService : IBotService
     {
         private readonly ISessionService _sessionService;
+        private readonly IPluginService _pluginService;
 
-        public BotService(ISessionService sessionService)
+        public BotService(ISessionService sessionService, IPluginService pluginService)
         {
             _sessionService = sessionService;
+            _pluginService = pluginService;
         }
 
         public async Task<OperationResult<BotResult>> HandleNewMessageAsync(BotMessage message, CancellationToken token)
         {
-            var chatId = message.ChatId;
-            var sessionRes = await _sessionService.GetSessionAsync(chatId, token);
-            if (!sessionRes.IsSuccess)
-                return sessionRes.To<BotResult>();
-            var session = sessionRes.Result;
-            if (session == null)
-            {
-                var sessionAddRes = await _sessionService.AddSessionAsync(chatId, token);
-                if (!sessionAddRes.IsSuccess)
-                    return sessionAddRes.To<BotResult>();
-                session = sessionAddRes.Result;
-            }
-            foreach(var plugin in session.Plugins)
+            var pluginsRes = await _pluginService.GetPluginsAsync(token);
+            if (!pluginsRes.IsSuccess)
+                return pluginsRes.To<BotResult>();
+            var plugins = pluginsRes.Result;
+            foreach(var plugin in plugins)
             {
                 var checkRes = await plugin.CheckAsync(message, token);
                 if (!checkRes.IsSuccess)
                     return checkRes.To<BotResult>();
                 if (checkRes.Result)
                 {
-                    var result = await plugin.HandleAsync(session, message, token);
-                    return result;
+                    var result = await plugin.HandleAsync(message, token);
+                    if (result.IsSuccess)
+                        return result;
+                    // TODO: обдумать лучшую вариацию обработки ошибок
+                    else if (result.Error is BusinessError berror)
+                        return new OperationResult<BotResult>(new BotResult
+                        {
+                            Text = berror.Message,
+                        });
+                    else
+                        return result;
                 }
             }
             return new OperationResult<BotResult>(new BotResult

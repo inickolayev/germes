@@ -1,6 +1,7 @@
 ﻿using Germes.Data;
 using Germes.Data.Models;
 using Germes.Data.Results;
+using Germes.Data.Results.Errors;
 using Germes.Services.Plugins;
 using System;
 using System.Collections.Generic;
@@ -14,25 +15,20 @@ namespace Germes.Services
     public class SessionService : ISessionService
     {
         private readonly IUserService _userService;
-        private readonly AccountantService _accountantService;
-        private readonly List<Session> _sessions = new List<Session>();
+        private readonly ISessionManager _sessionManager;
+        private static readonly List<Session> _sessions = new List<Session>();
 
-        public List<IBotPlugin> DefaultPlugins => new List<IBotPlugin>
-        {
-            new AccountantPlugin(_accountantService),
-        };
-
-        public SessionService(IUserService userService, AccountantService accountantService)
+        public SessionService(IUserService userService, ISessionManager sessionManager)
         {
             _userService = userService;
-            _accountantService = accountantService;
+            _sessionManager = sessionManager;
         }
 
         public async Task<OperationResult<Session>> AddSessionAsync(string chatId, CancellationToken token)
         {
             var session = _sessions.SingleOrDefault(s => s.User.ChatId == chatId);
             if (session != null)
-                return new OperationResult<Session>(new Exception("Session already exists"));
+                return new OperationResult<Session>(SessionErrors.SessionNotExist(chatId));
             var userRes = await _userService.GetUserAsync(chatId, token);
             if (!userRes.IsSuccess)
                 return userRes.To<Session>();
@@ -47,8 +43,7 @@ namespace Germes.Services
 
             session = new Session
             {
-                User = user,
-                Plugins = DefaultPlugins
+                User = user
             };
             _sessions.Add(session);
             return new OperationResult<Session>(session);
