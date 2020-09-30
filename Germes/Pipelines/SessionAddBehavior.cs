@@ -24,14 +24,6 @@ namespace Germes.Pipelines
             _sessionManager = sessionManager;
         }
 
-        //public Task<TResponse> Handle(TRequest request, CancellationToken token, RequestHandlerDelegate<TResponse> next)
-        //{
-        //    if (request is RequestNewMessage req)
-        //        return InternalHandle(req, token, next as RequestHandlerDelegate<OperationResult<BotResult>>) as Task<TResponse>;
-
-        //    return next();
-        //}
-
         public async Task<OperationResult<BotResult>> Handle(RequestNewMessage request, CancellationToken token, RequestHandlerDelegate<OperationResult<BotResult>> next)
         {
             var message = request.Message;

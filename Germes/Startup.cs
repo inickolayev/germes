@@ -48,7 +48,6 @@ namespace Germes
             });
             // Mediator
             services.AddMediatR(c => c.AsScoped(), Assembly.GetExecutingAssembly());
-            //services.AddTransient<IPipelineBehavior<RequestNewMessage, OperationResult<BotResult>>, SessionAddBehavior>();
             services.AddScoped(typeof(IPipelineBehavior<,>), typeof(LoggingBehavior<,>));
             services.AddScoped(typeof(IPipelineBehavior<RequestNewMessage, OperationResult<BotResult>>), typeof(SessionAddBehavior));
 
