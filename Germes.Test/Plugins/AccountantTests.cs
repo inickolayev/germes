@@ -29,5 +29,17 @@ namespace Germes.Test.Plugins
             Assert.True(res.IsSuccess);
             Assert.Equal(expected, res.Result.Text);
         }
+
+        [Fact]
+        public async Task AddIncome_success()
+        {
+            var req = CreateNewMessage("ЗП 5000");
+            var expected = "Остаток: 5000 руб.";
+
+            var res = await _mediator.SendSafe<RequestNewMessage, BotResult>(req);
+
+            Assert.True(res.IsSuccess);
+            Assert.Equal(expected, res.Result.Text);
+        }
     }
 }

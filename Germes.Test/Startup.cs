@@ -3,8 +3,10 @@ using Germes.Data.Requests;
 using Germes.Data.Results;
 using Germes.Pipelines;
 using Germes.Services;
+using Germes.Test.Mocks;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
+using Microsoft.Extensions.Hosting;
 using System;
 using System.Collections.Generic;
 using System.Reflection;
@@ -21,14 +23,16 @@ namespace Germes.Test
             services.AddScoped(typeof(IPipelineBehavior<RequestNewMessage, OperationResult<BotResult>>), typeof(SessionAddBehavior));
 
             // Services
-            services.AddScoped<IBotService, BotService>();
-            services.AddScoped<ISessionService, SessionService>();
-            services.AddScoped<ISessionManager, SessionManager>();
             services.AddScoped<IApplicationInfoService, ApplicationInfoService>();
-            services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAccountantService, AccountantService>();
-            services.AddScoped<ICategoryService, CategoryService>();
-            services.AddScoped<IPluginService, PluginService>();
+            services.AddScoped<IBotService, BotService>();
+            services.AddScoped<ISessionManager, SessionManager>();
+
+            // Mocks
+            services.AddScoped<IUserService, UserServiceMock>();
+            services.AddScoped<ISessionService, SessionServiceMock>();
+            services.AddScoped<IAccountantService, AccountantServiceMock>();
+            services.AddScoped<ICategoryService, CategoryServiceMock>();
+            services.AddScoped<IPluginService, PluginServiceMock>();
         }
     }
 }
