@@ -16,7 +16,7 @@ namespace Germes.Services
     {
         private readonly IUserService _userService;
         private readonly ISessionManager _sessionManager;
-        private static readonly List<Session> _sessions = new List<Session>();
+        private static readonly List<SessionModel> _sessions = new List<SessionModel>();
 
         public SessionService(IUserService userService, ISessionManager sessionManager)
         {
@@ -24,32 +24,33 @@ namespace Germes.Services
             _sessionManager = sessionManager;
         }
 
-        public async Task<OperationResult<Session>> AddSessionAsync(string chatId, CancellationToken token)
+        public async Task<OperationResult<SessionModel>> AddSessionAsync(string chatId, string userId, CancellationToken token)
         {
-            var session = _sessions.SingleOrDefault(s => s.User.ChatId == chatId);
+            var session = _sessions.SingleOrDefault(s => s.ChatId == chatId);
             if (session != null)
-                return new OperationResult<Session>(SessionErrors.SessionNotExist(chatId));
-            var userRes = await _userService.GetUserAsync(chatId, token);
-            if (!userRes.IsSuccess)
-                return userRes.To<Session>();
+                return new OperationResult<SessionModel>(SessionErrors.SessionAlreadyExist(chatId));
+            var userRes = await _userService.GetUserAsync(userId, token);
+            if (!userRes.IsSuccess || userRes.Result == null)
+                return userRes.To<SessionModel>();
             var user = userRes.Result;
-            if (user == null)
-            {
-                var userAddRes = await _userService.AddUserAsync(new UserModel { ChatId = chatId }, token);
-                if (!userAddRes.IsSuccess)
-                    return userAddRes.To<Session>();
-                user = userAddRes.Result;
-            }
 
-            session = new Session
+            session = new SessionModel
             {
                 User = user
             };
             _sessions.Add(session);
-            return new OperationResult<Session>(session);
+            return new OperationResult<SessionModel>(session);
         }
 
-        public async Task<OperationResult<Session>> GetSessionAsync(string chatId, CancellationToken token)
-            => new OperationResult<Session>(_sessions.SingleOrDefault(user => user.User.ChatId == chatId));
+        public async Task<OperationResult> AddSessionAsync(SessionModel session, CancellationToken token)
+        {
+            if (_sessions.Any(s => s.User == session.User && s.ChatId == session.ChatId))
+                return new OperationResult(SessionErrors.SessionAlreadyExist(session.ChatId));
+            _sessions.Add(session);
+            return new OperationResult();
+        }
+
+        public async Task<OperationResult<SessionModel>> GetSessionAsync(string chatId, CancellationToken token)
+            => new OperationResult<SessionModel>(_sessions.SingleOrDefault(s => s.ChatId == chatId));
     }
 }

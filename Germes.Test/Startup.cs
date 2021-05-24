@@ -3,7 +3,6 @@ using Germes.Data.Requests;
 using Germes.Data.Results;
 using Germes.Pipelines;
 using Germes.Services;
-using Germes.Test.Mocks;
 using MediatR;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -28,11 +27,11 @@ namespace Germes.Test
             services.AddScoped<ISessionManager, SessionManager>();
 
             // Mocks
-            services.AddScoped<IUserService, UserServiceMock>();
-            services.AddScoped<ISessionService, SessionServiceMock>();
-            services.AddScoped<IAccountantService, AccountantServiceMock>();
-            services.AddScoped<ICategoryService, CategoryServiceMock>();
-            services.AddScoped<IPluginService, PluginServiceMock>();
+            services.AddSingleton<IUserService, UserService>();
+            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<IAccountantService, AccountantService>();
+            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<IPluginService, PluginService>();
         }
     }
 }

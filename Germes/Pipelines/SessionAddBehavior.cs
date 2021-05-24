@@ -1,4 +1,5 @@
 ﻿using Germes.Data;
+using Germes.Data.Models;
 using Germes.Data.Requests;
 using Germes.Data.Results;
 using Germes.Services;
@@ -17,11 +18,13 @@ namespace Germes.Pipelines
     {
         private readonly ISessionService _sessionService;
         private readonly ISessionManager _sessionManager;
+        private readonly IUserService _userService;
 
-        public SessionAddBehavior(ISessionService sessionService, ISessionManager sessionManager)
+        public SessionAddBehavior(ISessionService sessionService, ISessionManager sessionManager, IUserService userService)
         {
             _sessionService = sessionService;
             _sessionManager = sessionManager;
+            _userService = userService;
         }
 
         public async Task<OperationResult<BotResult>> Handle(RequestNewMessage request, CancellationToken token, RequestHandlerDelegate<OperationResult<BotResult>> next)
@@ -34,7 +37,15 @@ namespace Germes.Pipelines
             var session = sessionRes.Result;
             if (session == null)
             {
-                var sessionAddRes = await _sessionService.AddSessionAsync(chatId, token);
+                var userAddRes = await _userService.AddUserAsync(new UserModel
+                {
+                    Id = new Guid().ToString(),
+                    Name = "Some"
+                });
+                if (!userAddRes.IsSuccess)
+                    return userAddRes.To<BotResult>();
+                var user = userAddRes.Result;
+                var sessionAddRes = await _sessionService.AddSessionAsync(chatId, user.Id, token);
                 if (!sessionAddRes.IsSuccess)
                     return sessionAddRes.To<BotResult>();
                 session = sessionAddRes.Result;

@@ -1,4 +1,5 @@
 ﻿using Germes.Data;
+using Germes.Data.Models;
 using Germes.Data.Results;
 using Germes.Data.Results.Errors;
 using System;
@@ -16,12 +17,12 @@ namespace Germes.Services
         /// <summary>
         ///     Текущая сессия
         /// </summary>
-        public Session CurrentSession { get; }
+        public SessionModel CurrentSession { get; }
 
         /// <summary>
         ///     Выставить текущую сессию
         /// </summary>
         /// <param name="session">Сессия</param>
-        OperationResult SetCurrentSession(Session session);
+        OperationResult SetCurrentSession(SessionModel session);
     }
 }

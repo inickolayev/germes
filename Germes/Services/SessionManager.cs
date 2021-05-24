@@ -1,4 +1,5 @@
 ﻿using Germes.Data;
+using Germes.Data.Models;
 using Germes.Data.Results;
 using Germes.Data.Results.Errors;
 using System;
@@ -10,9 +11,9 @@ namespace Germes.Services
 {
     public class SessionManager : ISessionManager
     {
-        public Session CurrentSession { get; private set; }
+        public SessionModel CurrentSession { get; private set; }
 
-        public OperationResult SetCurrentSession(Session session)
+        public OperationResult SetCurrentSession(SessionModel session)
         {
             if (CurrentSession != null)
                 return new OperationResult(SessionErrors.CurrentSessionAlreadySet());

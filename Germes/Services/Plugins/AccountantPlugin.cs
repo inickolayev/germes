@@ -15,7 +15,7 @@ namespace Germes.Services.Plugins
     /// </summary>
     public class AccountantPlugin : IBotPlugin
     {
-        private readonly Session _session;
+        private readonly SessionModel _session;
         private readonly IAccountantService _accountantService;
         private readonly ICategoryService _categoryService;
 

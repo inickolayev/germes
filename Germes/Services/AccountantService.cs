@@ -16,18 +16,18 @@ namespace Germes.Services
     /// </summary>
     public class AccountantService : IAccountantService
     {
-        private readonly Session _session;
+        private readonly SessionModel _session;
         private readonly List<ExpenseModel> _expenses = new List<ExpenseModel>();
         private readonly List<IncomeModel> _incomes = new List<IncomeModel>();
 
         /// <summary>
         ///     Рассходы
         /// </summary>
-        private static readonly Dictionary<Session, List<ExpenseModel>> _expensesDb = new Dictionary<Session, List<ExpenseModel>>();
+        private static readonly Dictionary<SessionModel, List<ExpenseModel>> _expensesDb = new Dictionary<SessionModel, List<ExpenseModel>>();
         /// <summary>
         ///     Доходы
         /// </summary>
-        private static readonly Dictionary<Session, List<IncomeModel>> _incomesDb = new Dictionary<Session, List<IncomeModel>>();
+        private static readonly Dictionary<SessionModel, List<IncomeModel>> _incomesDb = new Dictionary<SessionModel, List<IncomeModel>>();
 
         public AccountantService(ISessionManager sessionManager)
         {

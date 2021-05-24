@@ -17,12 +17,12 @@ namespace Germes.Services
     /// </summary>
     public class CategoryService : ICategoryService
     {
-        private readonly Session _session;
+        private readonly SessionModel _session;
         private readonly List<ExpenseCategoryModel> _expenseCategories;
         private readonly List<IncomeCategoryModel> _incomeCategories;
 
-        private static readonly Dictionary<Session, List<ExpenseCategoryModel>> _expenseCategoriesDb = new Dictionary<Session, List<ExpenseCategoryModel>>();
-        private static readonly Dictionary<Session, List<IncomeCategoryModel>> _incomeCategoriesDb = new Dictionary<Session, List<IncomeCategoryModel>>();
+        private static readonly Dictionary<SessionModel, List<ExpenseCategoryModel>> _expenseCategoriesDb = new Dictionary<SessionModel, List<ExpenseCategoryModel>>();
+        private static readonly Dictionary<SessionModel, List<IncomeCategoryModel>> _incomeCategoriesDb = new Dictionary<SessionModel, List<IncomeCategoryModel>>();
 
         public List<ExpenseCategoryModel> DefaultExpenseCategories =>
             new List<string>

@@ -14,8 +14,8 @@ namespace Germes.Services
         /// <summary>
         ///     Получить пользоватея
         /// </summary>
-        /// <param name="chatId">Id чата</param>
-        Task<OperationResult<UserModel>> GetUserAsync(string chatId, CancellationToken token = default);
+        /// <param name="userId">Id чата</param>
+        Task<OperationResult<UserModel>> GetUserAsync(string userId, CancellationToken token = default);
         /// <summary>
         ///     Добавить нового пользователя
         /// </summary>

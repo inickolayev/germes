@@ -1,4 +1,5 @@
 ﻿using Germes.Data;
+using Germes.Data.Models;
 using Germes.Data.Results;
 using Germes.Services.Plugins;
 using System;
@@ -14,7 +15,7 @@ namespace Germes.Services
     {
         private readonly List<IBotPlugin> _plagins = new List<IBotPlugin>();
 
-        private static readonly Dictionary<Session, List<IBotPlugin>> _plaginsDb = new Dictionary<Session, List<IBotPlugin>>();
+        private static readonly Dictionary<SessionModel, List<IBotPlugin>> _plaginsDb = new Dictionary<SessionModel, List<IBotPlugin>>();
 
         public IEnumerable<IBotPlugin> DefaultPlugins { get; }
 

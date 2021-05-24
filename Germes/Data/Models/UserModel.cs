@@ -8,10 +8,9 @@ namespace Germes.Data.Models
     public class UserModel
     {
         /// <summary>
-        ///     Идентификатор чата с пользователем
+        ///     Идентификатор пользователя
         /// </summary>
-        public string ChatId { get; set; }
-
+        public string Id { get; set; }
         /// <summary>
         ///     Имя пользователя
         /// </summary>
