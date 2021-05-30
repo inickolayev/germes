@@ -1,12 +1,10 @@
 ﻿using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Germes.Data;
-using Germes.Data.Requests;
-using Germes.Data.Results;
-using Germes.Extensions;
+using Germes.Domain.Data;
+using Germes.Mediators.Extensions;
+using Germes.Mediators.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
@@ -28,7 +26,8 @@ namespace Germes.Controllers
             _client = client;
             _mediator = mediator;
         }
-
+        
+        
         [HttpPost]
         public async Task HandleAsync(Update update, CancellationToken token)
         {
@@ -38,6 +37,23 @@ namespace Germes.Controllers
                 await HandleMessageAsync(update, token);
             else if (update.Type == UpdateType.EditedMessage)
                 await HandleEditedMessageAsync(update, token);
+        }
+
+        [HttpPost("simple")]
+        public Task HandleSimpleAsync(SimpleMessage msg, CancellationToken token)
+        {
+            var update = new Update
+            {
+                Message = new Message
+                {
+                    Chat = new Chat
+                    {
+                        Id = 123,
+                    },
+                    Text = msg.Message,
+                },
+            };
+            return HandleAsync(update, token);
         }
 
         private async Task HandleMessageAsync(Update update, CancellationToken token)
@@ -58,6 +74,11 @@ namespace Germes.Controllers
         private async Task HandleEditedMessageAsync(Update update, CancellationToken token)
         {
             await _client.SendTextMessageAsync(update.EditedMessage.Chat.Id, "Опа, да тут сообщения правят -_-", cancellationToken: token);
+        }
+
+        public class SimpleMessage
+        {
+            public string Message { get; set; }
         }
     }
 }

@@ -22,5 +22,10 @@
     <ProjectReference Include="..\Ngrok.Adapter\Ngrok.Adapter.csproj" />
   </ItemGroup>
 
+  <ItemGroup>
+    <Folder Include="Infrastructure\Extensions" />
+    <Folder Include="Mediators" />
+  </ItemGroup>
+
 
 </Project>

@@ -1,25 +1,24 @@
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Reflection;
-using System.Threading.Tasks;
+using Germes.Configurations;
 using Germes.Data;
+using Germes.Domain;
+using Germes.Domain.Data;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
-using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using Microsoft.Extensions.Logging;
 using Telegram.Bot;
 using MediatR;
-using Germes.Services;
+using Germes.Implementations.Services;
 using Microsoft.OpenApi.Models;
 using Ngrok.Adapter.Service;
-using Germes.Pipelines;
-using Germes.Data.Requests;
-using Germes.Data.Results;
+using Germes.Mediators.Pipelines;
+using Germes.Domain.Data.Results;
+using Germes.Implementations.Plugins;
+using Germes.Implementations.Repositories;
+using Germes.Infrastructure.Services;
+using Germes.Mediators.Requests;
 
 namespace Germes
 {
@@ -56,7 +55,7 @@ namespace Germes
             services.AddSingleton(_botSettings);
 
             // Services
-            services.AddHostedService<InitService>();
+            // services.AddHostedService<InitService>();
             services.AddSingleton<INgrokService>(s => new NgrokService(_botSettings.NgrokHost));
             services.AddScoped(serv => new TelegramBotClient(_botSettings.Token));
             services.AddScoped<IBotService, BotService>();
@@ -65,7 +64,7 @@ namespace Germes
             services.AddScoped<IApplicationInfoService, ApplicationInfoService>();
             services.AddScoped<IUserService, UserService>();
             services.AddScoped<IAccountantService, AccountantService>();
-            services.AddScoped<ICategoryService, CategoryService>();
+            services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IPluginService, PluginService>();
         }
 

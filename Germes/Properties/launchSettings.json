@@ -19,7 +19,7 @@
     "Germes": {
       "commandName": "Project",
       "launchBrowser": true,
-      "launchUrl": "/api/version",
+      "launchUrl": "api/version",
       "environmentVariables": {
         "ASPNETCORE_ENVIRONMENT": "Development"
       },

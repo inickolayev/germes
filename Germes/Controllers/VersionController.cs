@@ -1,18 +1,16 @@
 ﻿using Germes.Controllers;
-using Germes.Data;
-using Germes.Services.Requests;
 using MediatR;
 using Microsoft.AspNetCore.Mvc;
 using System.Threading;
 using System.Threading.Tasks;
+using Germes.Configurations;
+using Germes.Mediators.Requests;
 
-namespace CheckIIS.Controllers
+namespace Germes.Controllers
 {
     public class VersionController : BaseApiController
     {
         private readonly IMediator _meditor;
-
-        public Mediator Mediator { get; }
 
         public VersionController(IMediator mediator)
         {

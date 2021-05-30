@@ -1,0 +1,21 @@
+﻿namespace Germes.Domain.Data.Models
+{
+    /// <summary>
+    ///     Подкатегория рассходов
+    /// </summary>
+    public class ExpenseSubCategoryModel
+    {
+        /// <summary>
+        ///     Родительская категория
+        /// </summary>
+        public ExpenseCategoryModel ParentCategory { get; set; }
+        /// <summary>
+        ///     Имя подкатегории
+        /// </summary>
+        public string Name { get; set; }
+        /// <summary>
+        ///     Описание подкатегории
+        /// </summary>
+        public string Description { get; set; }
+    }
+}

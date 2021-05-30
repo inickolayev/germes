@@ -1,7 +1,4 @@
-﻿using System;
-using System.Threading.Tasks;
-using Flurl.Http;
-using Ngrok.Adapter.Data;
+﻿using System.Threading.Tasks;
 
 namespace Ngrok.Adapter.Service
 {
