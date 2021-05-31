@@ -9,12 +9,12 @@ namespace Germes.Implementations.Services
 {
     public class BotService : IBotService
     {
-        private readonly ISessionService _sessionService;
+        private readonly ISessionRepository _sessionRepository;
         private readonly IPluginService _pluginService;
 
-        public BotService(ISessionService sessionService, IPluginService pluginService)
+        public BotService(ISessionRepository sessionRepository, IPluginService pluginService)
         {
-            _sessionService = sessionService;
+            _sessionRepository = sessionRepository;
             _pluginService = pluginService;
         }
 

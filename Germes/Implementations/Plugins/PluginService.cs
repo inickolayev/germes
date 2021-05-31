@@ -18,12 +18,12 @@ namespace Germes.Implementations.Plugins
 
         public IEnumerable<IBotPlugin> DefaultPlugins { get; }
 
-        public PluginService(ISessionManager sessionManager, IAccountantService accountantService, ICategoryRepository categoryRepository)
+        public PluginService(ISessionManager sessionManager, IAccountantRepository accountantRepository, ICategoryRepository categoryRepository)
         {
             var session = sessionManager.CurrentSession;
             DefaultPlugins = new List<IBotPlugin>
             {
-                new AccountantPlugin(sessionManager, accountantService, categoryRepository)
+                new AccountantPlugin(sessionManager, accountantRepository, categoryRepository)
             };
 
             if (!_plaginsDb.ContainsKey(session))

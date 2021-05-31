@@ -2,20 +2,21 @@
 using Germes.Domain.Data.Results;
 using System.Threading;
 using System.Threading.Tasks;
+using Germes.Domain.Data.Models;
 
-namespace Germes.Implementations.Services
+namespace Germes.Domain.Repositories
 {
-    public interface ISessionService
+    public interface ISessionRepository
     {
         /// <summary>
         ///     Получить сессию по чату
         /// </summary>
         /// <param name="chatId">Id чата</param>
-        Task<OperationResult<Session>> GetSessionAsync(string chatId, CancellationToken token = default);
+        Task<OperationResult<SessionModel>> GetSessionAsync(string chatId, CancellationToken token = default);
         /// <summary>
         ///     Добавить новую сессию
         /// </summary>
         /// <param name="chatId">Id чата</param>
-        Task<OperationResult<Session>> AddSessionAsync(string chatId, CancellationToken token = default);
+        Task<OperationResult<SessionModel>> AddSessionAsync(string chatId, CancellationToken token = default);
     }
 }

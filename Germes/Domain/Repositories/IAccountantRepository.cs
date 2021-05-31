@@ -8,7 +8,7 @@ namespace Germes.Implementations.Services
     /// <summary>
     ///     Сервис подсчета расходов/доходов
     /// </summary>
-    public interface IAccountantService
+    public interface IAccountantRepository
     {
         /// <summary>
         ///     Добавить расход

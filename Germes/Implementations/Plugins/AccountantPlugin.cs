@@ -19,15 +19,15 @@ namespace Germes.Implementations.Plugins
     public class AccountantPlugin : IBotPlugin
     {
         private readonly Session _session;
-        private readonly IAccountantService _accountantService;
+        private readonly IAccountantRepository _accountantRepository;
         private readonly ICategoryRepository _categoryRepository;
 
         public bool IsAllow { get; set; }
 
-        public AccountantPlugin(ISessionManager sessionManager, IAccountantService accountantService, ICategoryRepository categoryRepository)
+        public AccountantPlugin(ISessionManager sessionManager, IAccountantRepository accountantRepository, ICategoryRepository categoryRepository)
         {
             _session = sessionManager.CurrentSession;
-            _accountantService = accountantService;
+            _accountantRepository = accountantRepository;
             _categoryRepository = categoryRepository;
         }
 
@@ -67,7 +67,7 @@ namespace Germes.Implementations.Plugins
                     Category = categoryExpenseRes.Result
                 };
 
-                var expenseAddRes = await _accountantService.AddAsync(expense, token);
+                var expenseAddRes = await _accountantRepository.AddAsync(expense, token);
                 if (!expenseAddRes.IsSuccess)
                     return expenseAddRes.To<BotResult>();
             }
@@ -80,14 +80,14 @@ namespace Germes.Implementations.Plugins
                     Category = categoryIncomeRes.Result
                 };
 
-                var incomeAddRes = await _accountantService.AddAsync(income, token);
+                var incomeAddRes = await _accountantRepository.AddAsync(income, token);
                 if (!incomeAddRes.IsSuccess)
                     return incomeAddRes.To<BotResult>();
             }
             else
                 return new OperationResult<BotResult>(CategoryErrors.CategoryNotExist(categoryName));
            
-            var balanceRes = await _accountantService.GetBalanceAsync(token);
+            var balanceRes = await _accountantRepository.GetBalanceAsync(token);
             if (!balanceRes.IsSuccess)
                 return balanceRes.To<BotResult>();
 

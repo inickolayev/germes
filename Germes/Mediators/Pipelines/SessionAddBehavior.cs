@@ -10,12 +10,12 @@ namespace Germes.Mediators.Pipelines
 {
     public class SessionAddBehavior : IPipelineBehavior<RequestNewMessage, OperationResult<BotResult>>
     {
-        private readonly ISessionService _sessionService;
+        private readonly ISessionRepository _sessionRepository;
         private readonly ISessionManager _sessionManager;
 
-        public SessionAddBehavior(ISessionService sessionService, ISessionManager sessionManager)
+        public SessionAddBehavior(ISessionRepository sessionRepository, ISessionManager sessionManager)
         {
-            _sessionService = sessionService;
+            _sessionRepository = sessionRepository;
             _sessionManager = sessionManager;
         }
 
@@ -31,13 +31,13 @@ namespace Germes.Mediators.Pipelines
         {
             var message = request.Message;
             var chatId = message.ChatId;
-            var sessionRes = await _sessionService.GetSessionAsync(chatId, token);
+            var sessionRes = await _sessionRepository.GetSessionAsync(chatId, token);
             if (!sessionRes.IsSuccess)
                 return sessionRes.To<BotResult>();
             var session = sessionRes.Result;
             if (session == null)
             {
-                var sessionAddRes = await _sessionService.AddSessionAsync(chatId, token);
+                var sessionAddRes = await _sessionRepository.AddSessionAsync(chatId, token);
                 if (!sessionAddRes.IsSuccess)
                     return sessionAddRes.To<BotResult>();
                 session = sessionAddRes.Result;

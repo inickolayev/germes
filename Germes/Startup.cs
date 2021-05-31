@@ -59,11 +59,11 @@ namespace Germes
             services.AddSingleton<INgrokService>(s => new NgrokService(_botSettings.NgrokHost));
             services.AddScoped(serv => new TelegramBotClient(_botSettings.Token));
             services.AddScoped<IBotService, BotService>();
-            services.AddScoped<ISessionService, SessionService>();
+            services.AddScoped<ISessionRepository, SessionRepository>();
             services.AddScoped<ISessionManager, SessionManager>();
             services.AddScoped<IApplicationInfoService, ApplicationInfoService>();
             services.AddScoped<IUserService, UserService>();
-            services.AddScoped<IAccountantService, AccountantService>();
+            services.AddScoped<IAccountantRepository, AccountantRepository>();
             services.AddScoped<ICategoryRepository, CategoryRepository>();
             services.AddScoped<IPluginService, PluginService>();
         }

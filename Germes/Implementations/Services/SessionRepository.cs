@@ -9,13 +9,13 @@ using System.Threading.Tasks;
 
 namespace Germes.Implementations.Services
 {
-    public class SessionService : ISessionService
+    public class SessionRepository : ISessionRepository
     {
         private readonly IUserService _userService;
         private readonly ISessionManager _sessionManager;
         private static readonly List<Session> _sessions = new List<Session>();
 
-        public SessionService(IUserService userService, ISessionManager sessionManager)
+        public SessionRepository(IUserService userService, ISessionManager sessionManager)
         {
             _userService = userService;
             _sessionManager = sessionManager;

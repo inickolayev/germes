@@ -3,9 +3,9 @@ using Germes.Domain.Data.Results;
 using System.Threading;
 using System.Threading.Tasks;
 
-namespace Germes.Implementations.Services
+namespace Germes.Domain.Repositories
 {
-    public interface IUserService
+    public interface IUserRepository
     {
         /// <summary>
         ///     Получить пользоватея

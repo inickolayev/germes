@@ -11,7 +11,7 @@ namespace Germes.Implementations.Services
     /// <summary>
     ///     Сервис подсчета расходов/доходов
     /// </summary>
-    public class AccountantService : IAccountantService
+    public class AccountantRepository : IAccountantRepository
     {
         private readonly Session _session;
         private readonly List<ExpenseModel> _expenses = new List<ExpenseModel>();
@@ -26,7 +26,7 @@ namespace Germes.Implementations.Services
         /// </summary>
         private static readonly Dictionary<Session, List<IncomeModel>> _incomesDb = new Dictionary<Session, List<IncomeModel>>();
 
-        public AccountantService(ISessionManager sessionManager)
+        public AccountantRepository(ISessionManager sessionManager)
         {
             _session = sessionManager.CurrentSession;
             if (!_expensesDb.ContainsKey(_session))
