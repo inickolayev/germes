@@ -3,12 +3,12 @@
     /// <summary>
     ///     Подкатегория рассходов
     /// </summary>
-    public class ExpenseSubCategoryModel
+    public class ExpenseSubCategory
     {
         /// <summary>
         ///     Родительская категория
         /// </summary>
-        public ExpenseCategoryModel ParentCategory { get; set; }
+        public ExpenseCategory ParentCategory { get; set; }
         /// <summary>
         ///     Имя подкатегории
         /// </summary>

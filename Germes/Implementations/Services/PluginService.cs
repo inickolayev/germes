@@ -5,6 +5,7 @@ using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
 using Germes.Domain;
+using Germes.Domain.Data.Models;
 using Germes.Domain.Plugins;
 using Germes.Implementations.Services;
 

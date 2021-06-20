@@ -5,7 +5,7 @@ namespace Germes.Domain.Data.Models
     /// <summary>
     ///     Модель дохода
     /// </summary>
-    public class IncomeModel
+    public class Income
     {
         /// <summary>
         ///     Доход
@@ -18,6 +18,6 @@ namespace Germes.Domain.Data.Models
         /// <summary>
         ///     Категория дохода
         /// </summary>
-        public IncomeCategoryModel Category { get; set; }
+        public IncomeCategory Category { get; set; }
     }
 }

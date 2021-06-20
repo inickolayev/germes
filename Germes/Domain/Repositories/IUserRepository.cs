@@ -11,11 +11,11 @@ namespace Germes.Domain.Repositories
         ///     Получить пользоватея
         /// </summary>
         /// <param name="chatId">Id чата</param>
-        Task<OperationResult<UserModel>> GetUserAsync(string chatId, CancellationToken token = default);
+        Task<User> GetUserAsync(string chatId, CancellationToken token = default);
         /// <summary>
         ///     Добавить нового пользователя
         /// </summary>
         /// <param name="user">Модель пользователя</param>
-        Task<OperationResult<UserModel>> AddUserAsync(UserModel user, CancellationToken token = default);
+        Task<User> AddUserAsync(User user, CancellationToken token = default);
     }
 }

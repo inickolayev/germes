@@ -3,6 +3,7 @@ using System.Threading;
 using System.Threading.Tasks;
 using Germes.Data;
 using Germes.Domain.Data;
+using Germes.Domain.Data.Results;
 using Germes.Mediators.Extensions;
 using Germes.Mediators.Requests;
 using MediatR;
@@ -34,13 +35,13 @@ namespace Germes.Controllers
             if (update == null)
                 throw new Exception("Update is null");
             if (update.Type == UpdateType.Message)
-                await HandleMessageAsync(update, token);
+                await InternalHandleMessageAsync(update, token);
             else if (update.Type == UpdateType.EditedMessage)
                 await HandleEditedMessageAsync(update, token);
         }
 
         [HttpPost("simple")]
-        public Task HandleSimpleAsync(SimpleMessage msg, CancellationToken token)
+        public Task<OperationResult<BotResult>> HandleSimpleAsync(SimpleMessage msg, CancellationToken token)
         {
             var update = new Update
             {
@@ -53,22 +54,29 @@ namespace Germes.Controllers
                     Text = msg.Message,
                 },
             };
-            return HandleAsync(update, token);
+            return HandleMessageAsync(update, token);
         }
 
-        private async Task HandleMessageAsync(Update update, CancellationToken token)
+        private async Task InternalHandleMessageAsync(Update update, CancellationToken token)
+        {
+            var chatId = update.Message.Chat.Id;
+            var res = await HandleMessageAsync(update, token);
+            if (res.IsSuccess)
+                await _client.SendTextMessageAsync(chatId, res.Result.Text, cancellationToken: token);
+            else
+                await _client.SendTextMessageAsync(chatId, $"Упс, что-то пошло не так...", cancellationToken: token);
+        }
+
+        private async Task<OperationResult<BotResult>> HandleMessageAsync(Update update, CancellationToken token)
         {
             var mess = new BotMessage
             {
                 ChatId = update.Message.Chat.Id.ToString(),
                 Text = update.Message.Text
             };
-            var chatId = update.Message.Chat.Id;
-            var res = await _mediator.SendSafe<RequestNewMessage, BotResult>(new RequestNewMessage { Message = mess }, token);
-            if (res.IsSuccess)
-                await _client.SendTextMessageAsync(chatId, res.Result.Text, cancellationToken: token);
-            else
-                await _client.SendTextMessageAsync(chatId, $"Упс, что-то пошло не так...", cancellationToken: token);
+            var res = await _mediator.SendSafe<RequestNewMessage, BotResult>(new RequestNewMessage {Message = mess},
+                token);
+            return res;
         }
 
         private async Task HandleEditedMessageAsync(Update update, CancellationToken token)

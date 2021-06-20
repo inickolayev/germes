@@ -4,17 +4,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Germes.Data;
 using Germes.Domain;
+using Germes.Domain.Repositories;
+using Germes.Domain.Services;
 
 namespace Germes.Implementations.Services
 {
     public class BotService : IBotService
     {
-        private readonly ISessionRepository _sessionRepository;
+        private readonly ISessionService _sessionService;
         private readonly IPluginService _pluginService;
 
-        public BotService(ISessionRepository sessionRepository, IPluginService pluginService)
+        public BotService(ISessionService sessionService, IPluginService pluginService)
         {
-            _sessionRepository = sessionRepository;
+            _sessionService = sessionService;
             _pluginService = pluginService;
         }
 

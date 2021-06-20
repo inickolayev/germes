@@ -6,18 +6,21 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading;
 using System.Threading.Tasks;
+using Germes.Domain.Repositories;
+using Germes.Domain.Services;
+using Germes.Implementations.Services;
 
 namespace Germes.Implementations.Services
 {
-    public class SessionRepository : ISessionRepository
+    public class SessionService : ISessionService
     {
-        private readonly IUserService _userService;
+        private readonly IUserRepository _userRepository;
         private readonly ISessionManager _sessionManager;
         private static readonly List<Session> _sessions = new List<Session>();
 
-        public SessionRepository(IUserService userService, ISessionManager sessionManager)
+        public SessionService(IUserRepository userRepository, ISessionManager sessionManager)
         {
-            _userService = userService;
+            _userRepository = userRepository;
             _sessionManager = sessionManager;
         }
 
@@ -26,17 +29,8 @@ namespace Germes.Implementations.Services
             var session = _sessions.SingleOrDefault(s => s.User.ChatId == chatId);
             if (session != null)
                 return new OperationResult<Session>(SessionErrors.SessionNotExist(chatId));
-            var userRes = await _userService.GetUserAsync(chatId, token);
-            if (!userRes.IsSuccess)
-                return userRes.To<Session>();
-            var user = userRes.Result;
-            if (user == null)
-            {
-                var userAddRes = await _userService.AddUserAsync(new UserModel { ChatId = chatId }, token);
-                if (!userAddRes.IsSuccess)
-                    return userAddRes.To<Session>();
-                user = userAddRes.Result;
-            }
+            var user = await _userRepository.GetUserAsync(chatId, token)
+                       ?? await _userRepository.AddUserAsync(new User { ChatId = chatId }, token);
 
             session = new Session
             {

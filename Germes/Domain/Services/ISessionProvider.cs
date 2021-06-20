@@ -12,12 +12,12 @@ namespace Germes.Implementations.Services
         /// <summary>
         ///     Текущая сессия
         /// </summary>
-        public SessionModel CurrentSession { get; }
+        public Session CurrentSession { get; }
 
         /// <summary>
         ///     Выставить текущую сессию
         /// </summary>
         /// <param name="session">Сессия</param>
-        OperationResult SetCurrentSession(SessionModel session);
+        OperationResult SetCurrentSession(Session session);
     }
 }

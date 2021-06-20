@@ -24,6 +24,9 @@ namespace Germes.Implementations.Plugins
 
         public bool IsAllow { get; set; }
 
+        private const string CommonPattern = "{d} ?{category} ?{subCategory}";
+        private const string SubPattern = "{d} {subCategory}";
+
         public AccountantPlugin(ISessionManager sessionManager, IAccountantRepository accountantRepository, ICategoryRepository categoryRepository)
         {
             _session = sessionManager.CurrentSession;
@@ -35,7 +38,7 @@ namespace Germes.Implementations.Plugins
         {
             var text = message.Text;
             var args = text.Split(" ");
-            var result = args.Count() == 2 && decimal.TryParse(args[1], out var _);
+            var result = args.Count() <= 3 && decimal.TryParse(args[0], out var _);
             return new OperationResult<bool>(result);
         }
 
@@ -46,52 +49,42 @@ namespace Germes.Implementations.Plugins
             // TODO: Придумать, что делать при двух одинаковых категориях доходов и рассходов
             var text = message.Text;
             var args = text.Split(" ");
-            var categoryName = args[0];
+            var cost = Convert.ToDecimal(args[0]);
             
-            var categoryExpenseRes = await _categoryRepository.GetExpenseCategoryAsync(categoryName, token);
-            if (!categoryExpenseRes.IsSuccess)
-                return categoryExpenseRes.To<BotResult>();
-            var categoryExpense = categoryExpenseRes.Result;
-            var categoryIncomeRes = await _categoryRepository.GetIncomeCategoryAsync(categoryName, token);
-            if (!categoryIncomeRes.IsSuccess)
-                return categoryIncomeRes.To<BotResult>();
-            var categoryIncome = categoryIncomeRes.Result;
-            var cost = Convert.ToDecimal(args[1]);
+            var categoryName = args[1];
+            var categoryExpense = await _categoryRepository.GetExpenseCategoryAsync(categoryName, token);
+            var categoryIncome = await _categoryRepository.GetIncomeCategoryAsync(categoryName, token);
 
             if (categoryExpense != null)
             {
-                var expense = new ExpenseModel
+                var expense = new Expense
                 {
                     Cost = cost,
                     Date = DateTime.Now,
-                    Category = categoryExpenseRes.Result
+                    Category = categoryExpense
                 };
 
-                var expenseAddRes = await _accountantRepository.AddAsync(expense, token);
-                if (!expenseAddRes.IsSuccess)
-                    return expenseAddRes.To<BotResult>();
+                await _accountantRepository.AddAsync(expense, token);
             }
             else if (categoryIncome != null)
             {
-                var income = new IncomeModel
+                var income = new Income
                 {
                     Cost = cost,
                     Date = DateTime.Now,
-                    Category = categoryIncomeRes.Result
+                    Category = categoryIncome
                 };
 
-                var incomeAddRes = await _accountantRepository.AddAsync(income, token);
-                if (!incomeAddRes.IsSuccess)
-                    return incomeAddRes.To<BotResult>();
+                await _accountantRepository.AddAsync(income, token);
             }
             else
+            {
                 return new OperationResult<BotResult>(CategoryErrors.CategoryNotExist(categoryName));
+            }
            
-            var balanceRes = await _accountantRepository.GetBalanceAsync(token);
-            if (!balanceRes.IsSuccess)
-                return balanceRes.To<BotResult>();
+            var balance = await _accountantRepository.GetBalanceAsync(token);
 
-            var result = $"Остаток: {balanceRes.Result} руб.";
+            var result = $"Остаток: {balance} руб.";
             return new OperationResult<BotResult>(new BotResult
             {
                 Text = result

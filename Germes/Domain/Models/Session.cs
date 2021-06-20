@@ -3,11 +3,11 @@
     /// <summary>
     ///     Модель сессии
     /// </summary>
-    public class SessionModel
+    public class Session
     {
         /// <summary>
         ///     Пользователь
         /// </summary>
-        public UserModel User{ get; set; }
+        public User User{ get; set; }
     }
 }

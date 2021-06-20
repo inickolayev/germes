@@ -4,19 +4,19 @@ using System.Threading;
 using System.Threading.Tasks;
 using Germes.Domain.Data.Models;
 
-namespace Germes.Domain.Repositories
+namespace Germes.Domain.Services
 {
-    public interface ISessionRepository
+    public interface ISessionService
     {
         /// <summary>
         ///     Получить сессию по чату
         /// </summary>
         /// <param name="chatId">Id чата</param>
-        Task<OperationResult<SessionModel>> GetSessionAsync(string chatId, CancellationToken token = default);
+        Task<OperationResult<Session>> GetSessionAsync(string chatId, CancellationToken token);
         /// <summary>
         ///     Добавить новую сессию
         /// </summary>
         /// <param name="chatId">Id чата</param>
-        Task<OperationResult<SessionModel>> AddSessionAsync(string chatId, CancellationToken token = default);
+        Task<OperationResult<Session>> AddSessionAsync(string chatId, CancellationToken token);
     }
 }

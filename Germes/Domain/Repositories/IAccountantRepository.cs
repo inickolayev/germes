@@ -14,15 +14,15 @@ namespace Germes.Implementations.Services
         ///     Добавить расход
         /// </summary>
         /// <param name="expense">Расход</param>
-        Task<OperationResult<ExpenseModel>> AddAsync(ExpenseModel expense, CancellationToken token);
+        Task<Expense> AddAsync(Expense expense, CancellationToken token);
         /// <summary>
         ///     Добавить доход
         /// </summary>
         /// <param name="income">Доход</param>
-        Task<OperationResult<IncomeModel>> AddAsync(IncomeModel income, CancellationToken token);
+        Task<Income> AddAsync(Income income, CancellationToken token);
         /// <summary>
         ///     Посчитать баланс (остаток)
         /// </summary>
-        Task<OperationResult<decimal>> GetBalanceAsync(CancellationToken token);
+        Task<decimal> GetBalanceAsync(CancellationToken token);
     }
 }

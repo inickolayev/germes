@@ -5,7 +5,7 @@ namespace Germes.Domain.Data.Models
     /// <summary>
     ///     Модель рассхода
     /// </summary>
-    public class ExpenseModel
+    public class Expense
     {
         /// <summary>
         ///     Трата
@@ -18,10 +18,10 @@ namespace Germes.Domain.Data.Models
         /// <summary>
         ///     Категория рассхода
         /// </summary>
-        public ExpenseCategoryModel Category { get; set; }
+        public ExpenseCategory Category { get; set; }
         /// <summary>
         ///     Подкатегория рассходов
         /// </summary>
-        public ExpenseSubCategoryModel SubCategory { get; set; }
+        public ExpenseSubCategory SubCategory { get; set; }
     }
 }

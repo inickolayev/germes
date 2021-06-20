@@ -1,6 +1,6 @@
 ﻿namespace Germes.Domain.Data.Models
 {
-    public class UserModel
+    public class User
     {
         /// <summary>
         ///     Идентификатор чата с пользователем

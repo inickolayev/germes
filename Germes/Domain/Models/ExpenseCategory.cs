@@ -3,7 +3,7 @@
     /// <summary>
     ///     Категория рассходов
     /// </summary>
-    public class ExpenseCategoryModel
+    public class ExpenseCategory
     {
         /// <summary>
         ///     Имя категории

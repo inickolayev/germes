@@ -1,4 +1,5 @@
 ﻿using Germes.Domain.Data;
+using Germes.Domain.Data.Models;
 using Germes.Domain.Data.Results;
 using Germes.Domain.Data.Results.Errors;
 

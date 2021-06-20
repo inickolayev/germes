@@ -3,7 +3,7 @@
     /// <summary>
     ///     Категория доходов
     /// </summary>
-    public class IncomeCategoryModel
+    public class IncomeCategory
     {
         /// <summary>
         ///     Имя категории

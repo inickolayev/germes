@@ -14,26 +14,26 @@ namespace Germes.Implementations.Services
     public class AccountantRepository : IAccountantRepository
     {
         private readonly Session _session;
-        private readonly List<ExpenseModel> _expenses = new List<ExpenseModel>();
-        private readonly List<IncomeModel> _incomes = new List<IncomeModel>();
+        private readonly List<Expense> _expenses = new List<Expense>();
+        private readonly List<Income> _incomes = new List<Income>();
 
         /// <summary>
         ///     Рассходы
         /// </summary>
-        private static readonly Dictionary<Session, List<ExpenseModel>> _expensesDb = new Dictionary<Session, List<ExpenseModel>>();
+        private static readonly Dictionary<Session, List<Expense>> _expensesDb = new Dictionary<Session, List<Expense>>();
         /// <summary>
         ///     Доходы
         /// </summary>
-        private static readonly Dictionary<Session, List<IncomeModel>> _incomesDb = new Dictionary<Session, List<IncomeModel>>();
+        private static readonly Dictionary<Session, List<Income>> _incomesDb = new Dictionary<Session, List<Income>>();
 
         public AccountantRepository(ISessionManager sessionManager)
         {
             _session = sessionManager.CurrentSession;
             if (!_expensesDb.ContainsKey(_session))
-                _expensesDb.Add(_session, new List<ExpenseModel>());
+                _expensesDb.Add(_session, new List<Expense>());
             _expenses = _expensesDb[_session];
             if (!_incomesDb.ContainsKey(_session))
-                _incomesDb.Add(_session, new List<IncomeModel>());
+                _incomesDb.Add(_session, new List<Income>());
             _incomes = _incomesDb[_session];
         }
 
@@ -41,27 +41,27 @@ namespace Germes.Implementations.Services
         ///     Добавить расход
         /// </summary>
         /// <param name="expense">Расход</param>
-        public async Task<OperationResult<ExpenseModel>> AddAsync(ExpenseModel expense, CancellationToken token)
+        public async Task<Expense> AddAsync(Expense expense, CancellationToken token)
         {
             _expenses.Add(expense);
-            return new OperationResult<ExpenseModel>(expense);
+            return expense;
         }
         /// <summary>
         ///     Добавить доход
         /// </summary>
         /// <param name="income">Доход</param>
-        public async Task<OperationResult<IncomeModel>> AddAsync(IncomeModel income, CancellationToken token)
+        public async Task<Income> AddAsync(Income income, CancellationToken token)
         {
             _incomes.Add(income);
-            return new OperationResult<IncomeModel>(income);
+            return income;
         }
         /// <summary>
         ///     Посчитать баланс (остаток)
         /// </summary>
-        public  async Task<OperationResult<decimal>> GetBalanceAsync(CancellationToken token)
+        public  async Task<decimal> GetBalanceAsync(CancellationToken token)
         {
             var result = _incomes.Select(inc => inc.Cost).Sum() - _expenses.Select(inc => inc.Cost).Sum();
-            return new OperationResult<decimal>(result);
+            return result;
         }
     }
 }
