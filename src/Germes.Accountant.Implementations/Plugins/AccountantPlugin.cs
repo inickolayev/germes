@@ -27,7 +27,7 @@ namespace Germes.Accountant.Implementations.Plugins
         
         public bool IsAllow => true;
 
-        private const string CommonPattern = "{cost}{?comment}{?category}";
+        private const string CommonPattern = "{cost}{comment}{?category}";
 
         public AccountantPlugin(IAccountantReadRepository accountantRepository,
             IAccountantRegisterRepository accountantRegisterRepository,

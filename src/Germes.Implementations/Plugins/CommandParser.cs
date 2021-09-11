@@ -58,29 +58,37 @@ namespace Germes.Implementations.Plugins
                 .Split(" ")
                 .Where(it => !string.IsNullOrWhiteSpace(it))
                 .ToArray();
-            int currentId = 0;
+            
+            if (values.Length > Keys.Count())
+            {
+                throw new CommandParserCommandNotValidException(command, _pattern);
+            }
+            
+            int currentIndex = 0;
             var items = new List<CommandItem>();
             foreach (var itemKey in Keys)
             {
                 var key = itemKey.Key;
-                bool isOptional = key[0] == '?';
-                if (isOptional)
+                if (itemKey.IsOptional)
                 {
-                    var value = values.Length > currentId
-                        ? values[currentId]
+                    var value = values.Length > currentIndex
+                        ? values[currentIndex]
                         : DefaultValue;
                     var item = new CommandItem(key, value, true);
                     items.Add(item);
                 }
                 else
                 {
-                    var value = values.Length > currentId
-                        ? values[currentId]
+                    var value = values.Length > currentIndex
+                        ? values[currentIndex]
                         : throw new CommandParserItemNotExistsException(key, command);
                     var item = new CommandItem(key, value, false);
                     items.Add(item);
                 }
+
+                currentIndex++;
             }
+
             return new CommandItems(items);
         }
 

@@ -29,7 +29,7 @@ namespace Germes.Abstractions.Models
 
         public string GetString(string key)
         {
-            if (_items.ContainsKey(key))
+            if (!_items.ContainsKey(key))
             {
                 throw new CommandParserItemNotExistsException(key);
             }
