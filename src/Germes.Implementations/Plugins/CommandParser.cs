@@ -11,30 +11,30 @@ namespace Germes.Implementations.Plugins
     public class CommandParser : ICommandParser
     {
         private readonly string _pattern;
-        private readonly List<CommandKey> keys = new List<CommandKey>();
-        
         private const string ItemPattern = "{\\??[a-zA-Z]*}";
         private static readonly string DefaultValue = string.Empty;
+        
+        public List<CommandKey> Keys = new List<CommandKey>();
 
         public CommandParser(string pattern)
         {
             _pattern = pattern;
-            var matches = new Regex(_pattern).Matches(ItemPattern);
+            var matches = new Regex(ItemPattern).Matches(_pattern);
             foreach (Match match in matches)
             {
                 var matchKey = match.Value;
-                var key = matchKey.Remove('{').Remove('}');
+                var key = matchKey.Replace("{", "").Replace("}", "");
                 bool isOptional = key[0] == '?';
                 if (isOptional)
                 {
-                    key = key.Remove('?');
+                    key = key.Replace("?", "");
                     var itemKey = new CommandKey(key, true);
-                    keys.Add(itemKey);
+                    Keys.Add(itemKey);
                 }
                 else
                 {
                     var itemKey = new CommandKey(key, false);
-                    keys.Add(itemKey);
+                    Keys.Add(itemKey);
                 }
             }
         }
@@ -60,7 +60,7 @@ namespace Germes.Implementations.Plugins
                 .ToArray();
             int currentId = 0;
             var items = new List<CommandItem>();
-            foreach (var itemKey in keys)
+            foreach (var itemKey in Keys)
             {
                 var key = itemKey.Key;
                 bool isOptional = key[0] == '?';
@@ -84,7 +84,7 @@ namespace Germes.Implementations.Plugins
             return new CommandItems(items);
         }
 
-        class CommandKey
+        public class CommandKey
         {
             public string Key { get; set; }
             public bool IsOptional { get; }

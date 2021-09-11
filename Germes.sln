@@ -25,6 +25,8 @@ Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Implementations", "s
 EndProject
 Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Telegram", "src\Germes.Telegram\Germes.Telegram.csproj", "{96E7B701-E1EB-4613-8AB7-C38AC8BA8D84}"
 EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Tests", "src\Germes.Tests\Germes.Tests.csproj", "{3863D67E-EA3C-4F67-95AB-CF8452832E57}"
+EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
 		Debug|Any CPU = Debug|Any CPU
@@ -67,6 +69,10 @@ Global
 		{96E7B701-E1EB-4613-8AB7-C38AC8BA8D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{96E7B701-E1EB-4613-8AB7-C38AC8BA8D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{96E7B701-E1EB-4613-8AB7-C38AC8BA8D84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
@@ -80,5 +86,6 @@ Global
 		{5383B922-CB88-4173-87AF-1EF953130456} = {EE671C00-1173-4DD7-A203-875C117A250D}
 		{09EBF9AF-3FFF-4D7B-9A69-35A90F805450} = {B47A136C-AE2F-4A7D-A8AB-DA646E6C427F}
 		{D9739F09-90D1-43D9-B030-F3CC97E66932} = {B47A136C-AE2F-4A7D-A8AB-DA646E6C427F}
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57} = {B47A136C-AE2F-4A7D-A8AB-DA646E6C427F}
 	EndGlobalSection
 EndGlobal
