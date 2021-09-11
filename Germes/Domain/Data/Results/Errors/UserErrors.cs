@@ -1,7 +1,0 @@
-﻿namespace Germes.Domain.Data.Results.Errors
-{
-    public static class UserErrors
-    {
-        public static BusinessError UserNotExist(string chatId) => new BusinessError($"Пользователя с chatId=\"{chatId}\" не существует");
-    }
-}
