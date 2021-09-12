@@ -1,0 +1,12 @@
+{
+  "ConnectionStrings": {
+    "MySqlConnection": "Data Source=localhost; Port=3306; Initial Catalog=client-barometer; Character Set=utf8; User Id=test; Password=test_pass; convertzerodatetime=true; Allow User Variables=True; SSL Mode=None; Pooling=true; AllowPublicKeyRetrieval=True;  ConnectionLifeTime=180"
+  },
+  "TelegramBot": {
+    "Token": "<TELEGRAM_TOKEN>",
+    "NgrokHost": "localhost:6020"
+  },
+  "Predictor": {
+    "Host": "http://localhost:5010"
+  }
+}

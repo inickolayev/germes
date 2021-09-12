@@ -29,7 +29,7 @@ namespace Germes
         public Startup(IConfiguration configuration)
         {
             _configuration = configuration;
-            _botSettings = configuration.GetSection("Bot").Get<BotSettings>();
+            _botSettings = configuration.GetSection("TelegramBot").Get<BotSettings>();
             _appSettings = configuration.GetSection("ApplicationInfo").Get<ApplicationInfoSettings>();
         }
 
