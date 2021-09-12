@@ -4,18 +4,36 @@ services:
   germes:
     environment:
       - ASPNETCORE_ENVIRONMENT=Development
-      - ASPNETCORE_URLS=https://+:443;http://+:80
+      - ASPNETCORE_URLS=http://+:80
     ports:
-      - "6010:80"
-      - "6011:443"
+      - "5000:80"
     volumes:
       - ${APPDATA}/Microsoft/UserSecrets:/root/.microsoft/usersecrets:ro
       - ${APPDATA}/ASP.NET/Https:/root/.aspnet/https:ro
 
+  db:
+    image: mysql
+    environment:
+      - MYSQL_ROOT_PASSWORD=${MYSQL_ROOT_PASSWORD}
+      - MYSQL_DATABASE=client-barometer
+      - MYSQL_USER=${MYSQL_USER}
+      - MYSQL_PASSWORD=${MYSQL_PASSWORD}
+    volumes:
+        - './db:/var/lib/mysql'
+    ports:
+      - "3306:3306"
+
+  front:
+    volumes:
+      - ./src/Front:/app
+    ports:
+      - 3000:3000
+
   ngrok:
     environment:
-      - NGROK_AUTH=1gT6fH7Bmv3Kl4QvsI0o8mKTFD8_3fdQST1rNvU1tLDgFH4rM
-      - NGROK_LOOK_DOMAIN=germes
+      - NGROK_AUTH=${NGROK_TOKEN}
+      - NGROK_LOOK_DOMAIN=${BACK_URL}
+      - NGROK_PORT=${BACK_PORT}
       - NGROK_DEBUG=true
     ports:
       - "6020:4040"

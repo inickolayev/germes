@@ -1,0 +1,13 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Germes.Abstractions\Germes.Abstractions.csproj" />
+      <ProjectReference Include="..\Germes.Accountant.Domain\Germes.Accountant.Domain.csproj" />
+      <ProjectReference Include="..\Germes.Implementations\Germes.Implementations.csproj" />
+    </ItemGroup>
+
+</Project>

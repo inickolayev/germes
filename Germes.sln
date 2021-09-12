@@ -3,11 +3,29 @@ Microsoft Visual Studio Solution File, Format Version 12.00
 # Visual Studio Version 16
 VisualStudioVersion = 16.0.30128.36
 MinimumVisualStudioVersion = 10.0.40219.1
-Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germes", "Germes\Germes.csproj", "{F731A3E4-6B1E-46A8-987D-111AED8F7C00}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "Germes", "src\Germes\Germes.csproj", "{F731A3E4-6B1E-46A8-987D-111AED8F7C00}"
 EndProject
 Project("{E53339B2-1760-4266-BCC7-CA923CBCF16C}") = "docker-compose", "docker-compose.dcproj", "{05AB90E7-21BF-4967-8637-08CC9741DF1B}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ngrok.Adapter", "Ngrok.Adapter\Ngrok.Adapter.csproj", "{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}"
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Ngrok.Adapter", "src\Ngrok.Adapter\Ngrok.Adapter.csproj", "{D1137988-F329-4657-A1DE-1B7C45AF4207}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Germes.Accountant", "Germes.Accountant", "{EE671C00-1173-4DD7-A203-875C117A250D}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "Germes.Common", "Germes.Common", "{B47A136C-AE2F-4A7D-A8AB-DA646E6C427F}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Accountant.Domain", "src\Germes.Accountant.Domain\Germes.Accountant.Domain.csproj", "{02DCCB65-8240-429B-91B8-FC7B167E590C}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Accountant.Implementations", "src\Germes.Accountant.Implementations\Germes.Accountant.Implementations.csproj", "{7860E783-6CBC-4FEA-AB75-7197C7528A87}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Accountant.Contracts", "src\Germes.Accountant.Contracts\Germes.Accountant.Contracts.csproj", "{5383B922-CB88-4173-87AF-1EF953130456}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Abstractions", "src\Germes.Abstractions\Germes.Abstractions.csproj", "{09EBF9AF-3FFF-4D7B-9A69-35A90F805450}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Implementations", "src\Germes.Implementations\Germes.Implementations.csproj", "{D9739F09-90D1-43D9-B030-F3CC97E66932}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Telegram", "src\Germes.Telegram\Germes.Telegram.csproj", "{96E7B701-E1EB-4613-8AB7-C38AC8BA8D84}"
+EndProject
+Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "Germes.Tests", "src\Germes.Tests\Germes.Tests.csproj", "{3863D67E-EA3C-4F67-95AB-CF8452832E57}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution
@@ -23,15 +41,51 @@ Global
 		{05AB90E7-21BF-4967-8637-08CC9741DF1B}.Debug|Any CPU.Build.0 = Debug|Any CPU
 		{05AB90E7-21BF-4967-8637-08CC9741DF1B}.Release|Any CPU.ActiveCfg = Release|Any CPU
 		{05AB90E7-21BF-4967-8637-08CC9741DF1B}.Release|Any CPU.Build.0 = Release|Any CPU
-		{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
-		{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}.Debug|Any CPU.Build.0 = Debug|Any CPU
-		{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}.Release|Any CPU.ActiveCfg = Release|Any CPU
-		{CF190DA3-A73D-42F7-8D38-BD895B11D9CD}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D1137988-F329-4657-A1DE-1B7C45AF4207}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D1137988-F329-4657-A1DE-1B7C45AF4207}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D1137988-F329-4657-A1DE-1B7C45AF4207}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D1137988-F329-4657-A1DE-1B7C45AF4207}.Release|Any CPU.Build.0 = Release|Any CPU
+		{02DCCB65-8240-429B-91B8-FC7B167E590C}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{02DCCB65-8240-429B-91B8-FC7B167E590C}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{02DCCB65-8240-429B-91B8-FC7B167E590C}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{02DCCB65-8240-429B-91B8-FC7B167E590C}.Release|Any CPU.Build.0 = Release|Any CPU
+		{7860E783-6CBC-4FEA-AB75-7197C7528A87}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7860E783-6CBC-4FEA-AB75-7197C7528A87}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{7860E783-6CBC-4FEA-AB75-7197C7528A87}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{7860E783-6CBC-4FEA-AB75-7197C7528A87}.Release|Any CPU.Build.0 = Release|Any CPU
+		{5383B922-CB88-4173-87AF-1EF953130456}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{5383B922-CB88-4173-87AF-1EF953130456}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{5383B922-CB88-4173-87AF-1EF953130456}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{5383B922-CB88-4173-87AF-1EF953130456}.Release|Any CPU.Build.0 = Release|Any CPU
+		{09EBF9AF-3FFF-4D7B-9A69-35A90F805450}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{09EBF9AF-3FFF-4D7B-9A69-35A90F805450}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{09EBF9AF-3FFF-4D7B-9A69-35A90F805450}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{09EBF9AF-3FFF-4D7B-9A69-35A90F805450}.Release|Any CPU.Build.0 = Release|Any CPU
+		{D9739F09-90D1-43D9-B030-F3CC97E66932}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{D9739F09-90D1-43D9-B030-F3CC97E66932}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{D9739F09-90D1-43D9-B030-F3CC97E66932}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{D9739F09-90D1-43D9-B030-F3CC97E66932}.Release|Any CPU.Build.0 = Release|Any CPU
+		{96E7B701-E1EB-4613-8AB7-C38AC8BA8D84}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{96E7B701-E1EB-4613-8AB7-C38AC8BA8D84}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{96E7B701-E1EB-4613-8AB7-C38AC8BA8D84}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{96E7B701-E1EB-4613-8AB7-C38AC8BA8D84}.Release|Any CPU.Build.0 = Release|Any CPU
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57}.Debug|Any CPU.Build.0 = Debug|Any CPU
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57}.Release|Any CPU.ActiveCfg = Release|Any CPU
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57}.Release|Any CPU.Build.0 = Release|Any CPU
 	EndGlobalSection
 	GlobalSection(SolutionProperties) = preSolution
 		HideSolutionNode = FALSE
 	EndGlobalSection
 	GlobalSection(ExtensibilityGlobals) = postSolution
 		SolutionGuid = {F9B10872-7FA7-4EDE-8A50-EC8D4DB1D1BD}
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{02DCCB65-8240-429B-91B8-FC7B167E590C} = {EE671C00-1173-4DD7-A203-875C117A250D}
+		{7860E783-6CBC-4FEA-AB75-7197C7528A87} = {EE671C00-1173-4DD7-A203-875C117A250D}
+		{5383B922-CB88-4173-87AF-1EF953130456} = {EE671C00-1173-4DD7-A203-875C117A250D}
+		{09EBF9AF-3FFF-4D7B-9A69-35A90F805450} = {B47A136C-AE2F-4A7D-A8AB-DA646E6C427F}
+		{D9739F09-90D1-43D9-B030-F3CC97E66932} = {B47A136C-AE2F-4A7D-A8AB-DA646E6C427F}
+		{3863D67E-EA3C-4F67-95AB-CF8452832E57} = {B47A136C-AE2F-4A7D-A8AB-DA646E6C427F}
 	EndGlobalSection
 EndGlobal

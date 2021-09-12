@@ -5,13 +5,28 @@ services:
     image: ${DOCKER_REGISTRY-}germes
     build:
       context: .
-      dockerfile: Germes/Dockerfile
+      dockerfile: arc/Germes/Dockerfile
     networks:
       - docker-network
+    restart: unless-stopped
 
   ngrok:
     image: wernight/ngrok
     container_name: ngrok
+    networks:
+      - docker-network
+
+  db:
+    image: mysql
+    restart: unless-stopped
+    networks:
+      - docker-network
+
+  front:
+    image: node:12-alpine
+    build:
+      context: ./src/Front
+    restart: unless-stopped
     networks:
       - docker-network
 
