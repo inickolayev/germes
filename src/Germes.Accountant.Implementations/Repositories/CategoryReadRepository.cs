@@ -14,35 +14,33 @@ namespace Germes.Accountant.Implementations.Repositories
     /// </summary>
     public class CategoryReadRepository : ICategoryReadRepository
     {
+        private static List<ExpenseCategory> DefaultExpenseCategories =>
+            new List<string>
+                {
+                    "Продукты",
+                    "Алкоголь",
+                    "Табак",
+                    "Животные",
+                    "Подписки"
+                }
+                .Select(name => new ExpenseCategory { Name = name })
+                .ToList();
+
+        private static List<IncomeCategory> DefaultIncomeCategories =>
+            new List<string>
+                {
+                    "ЗП",
+                    "Аванс",
+                    "Подработка"
+                }
+                .Select(name => new IncomeCategory { Name = name })
+                .ToList();
+
+        
         private readonly Session _session;
-        private readonly List<ExpenseCategory> _expenseCategories;
-        private readonly List<IncomeCategory> _incomeCategories;
-
-        private static readonly Dictionary<Session, List<ExpenseCategory>> _expenseCategoriesDb = new Dictionary<Session, List<ExpenseCategory>>();
-        private static readonly Dictionary<Session, List<IncomeCategory>> _incomeCategoriesDb = new Dictionary<Session, List<IncomeCategory>>();
-
-        public List<ExpenseCategory> DefaultExpenseCategories =>
-            new List<string>
-            {
-                "Продукты",
-                "Алкоголь",
-                "Табак",
-                "Животные",
-                "Подписки"
-            }
-            .Select(name => new ExpenseCategory { Name = name })
-            .ToList();
-
-        public List<IncomeCategory> DefaultIncomeCategories =>
-            new List<string>
-            {
-                "ЗП",
-                "Аванс",
-                "Подработка"
-            }
-            .Select(name => new IncomeCategory { Name = name })
-            .ToList();
-
+        private readonly List<ExpenseCategory> _expenseCategories = DefaultExpenseCategories;
+        private readonly List<IncomeCategory> _incomeCategories = DefaultIncomeCategories;
+        
         public CategoryReadRepository()
         {
         }

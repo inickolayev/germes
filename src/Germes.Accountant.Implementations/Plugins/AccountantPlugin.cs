@@ -27,8 +27,6 @@ namespace Germes.Accountant.Implementations.Plugins
         
         public bool IsAllow => true;
 
-        private const string CommonPattern = "{cost}{comment}{?category}";
-
         public AccountantPlugin(IAccountantReadRepository accountantRepository,
             IAccountantRegisterRepository accountantRegisterRepository,
             ICategoryReadRepository categoryReadRepository,
@@ -41,7 +39,7 @@ namespace Germes.Accountant.Implementations.Plugins
             _categoryRegisterRepository = categoryRegisterRepository;
             _commandParsers = new[]
             {
-                new CommandParser("{cost}{?comment}{?category}")
+                new CommandParser("{cost}{category}{?comment}")
             };
         }
 
