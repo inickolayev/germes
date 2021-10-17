@@ -6,8 +6,11 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Germes.Abstractions\Germes.Abstractions.csproj" />
+      <ProjectReference Include="..\Germes.Accountant.Contracts\Germes.Accountant.Contracts.csproj" />
+      <ProjectReference Include="..\Germes.Accountant.DataAccess\Germes.Accountant.DataAccess.csproj" />
       <ProjectReference Include="..\Germes.Accountant.Domain\Germes.Accountant.Domain.csproj" />
       <ProjectReference Include="..\Germes.Implementations\Germes.Implementations.csproj" />
+      <ProjectReference Include="..\Germes.User.Domain\Germes.User.Domain.csproj" />
     </ItemGroup>
 
 </Project>

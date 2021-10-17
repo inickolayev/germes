@@ -10,13 +10,11 @@ namespace Germes.Implementations.Services
 {
     public class BotService : IBotService
     {
-        private readonly ISessionService _sessionService;
         private readonly IPluginService _pluginService;
         private readonly ILogger<BotService> _logger;
 
-        public BotService(ISessionService sessionService, IPluginService pluginService, ILogger<BotService> logger)
+        public BotService(IPluginService pluginService, ILogger<BotService> logger)
         {
-            _sessionService = sessionService;
             _pluginService = pluginService;
             _logger = logger;
         }

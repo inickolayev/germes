@@ -1,16 +1,9 @@
 using System.Reflection;
 using Germes.Abstractions.Models;
-using Germes.Abstractions.Repositories;
 using Germes.Abstractions.Services;
-using Germes.Accountant.Domain.Repositories;
-using Germes.Accountant.Domain.Services;
-using Germes.Accountant.Implementations.Plugins;
-using Germes.Accountant.Implementations.Repositories;
-using Germes.Accountant.Implementations.Services;
+using Germes.Accountant.DataAccess;
 using Germes.Configurations;
 using Germes.Domain.Data;
-using Germes.Domain.Plugins;
-using Germes.Implementations.Repositories;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -23,7 +16,10 @@ using Microsoft.OpenApi.Models;
 using Ngrok.Adapter.Service;
 using Germes.Mediators.Pipelines;
 using Germes.Telegram.Infrastructure.Services;
+using Germes.User.DataAccess;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
+using Germes.Extensions;
 
 namespace Germes
 {
@@ -43,6 +39,11 @@ namespace Germes
         // This method gets called by the runtime. Use this method to add services to the container.
         public void ConfigureServices(IServiceCollection services)
         {
+            var connectionString = _configuration.GetConnectionString("MySqlConnection");
+            services
+                .AddDbContext<AccountantDbContext>(connectionString)
+                .AddDbContext<UserDbContext>(connectionString);
+            
             // Infrastructure
             services.AddControllers().AddNewtonsoftJson();
             // Swagger
@@ -62,7 +63,6 @@ namespace Germes
             services.AddSingleton<INgrokService>(s => new NgrokService(_botSettings.NgrokHost));
             services.AddScoped(serv => new TelegramBotClient(_botSettings.Token));
             services.AddScoped<IBotService, BotService>();
-            services.AddScoped<ISessionService, SessionService>();
             services.AddScoped<IApplicationInfoService>(sp => new ApplicationInfoService(
                 sp.GetService<ILogger<ApplicationInfoService>>(),
                 new ApplicationInfo()
@@ -70,14 +70,9 @@ namespace Germes
                     Name = _appSettings.Name,
                     Version = _appSettings.Version
                 }));
-            services.AddScoped<IUserRepository, UserRepository>();
-            services.AddScoped<IAccountantReadRepository, AccountantReadRepository>();
-            services.AddScoped<IAccountantRegisterRepository, AccountantRegisterRepository>();
-            services.AddScoped<ICategoryReadRepository, CategoryReadRepository>();
-            services.AddScoped<ICategoryRegisterRepository, CategoryRegisterRepository>();
-            services.AddScoped<IAccountantService, AccountantService>();
             services.AddScoped<IPluginService, PluginService>();
-            services.AddScoped<IBotPlugin, AccountantPlugin>();
+            services.AddAccountantDomain();
+            services.AddUserDomain();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
@@ -107,6 +102,24 @@ namespace Germes
             {
                 endpoints.MapControllers();
             });
+            
+            UpdateDatabase(app);
+        }
+
+        private void UpdateDatabase(IApplicationBuilder app)
+        {
+            using var serviceScope = app.ApplicationServices
+                .GetRequiredService<IServiceScopeFactory>()
+                .CreateScope();
+            UpdateDatabase<AccountantDbContext>(serviceScope);
+            UpdateDatabase<UserDbContext>(serviceScope);
+        }
+        
+        private void UpdateDatabase<TDbContext>(IServiceScope scope)
+            where TDbContext : DbContext
+        {
+            using var context = scope.ServiceProvider.GetService<TDbContext>();
+            context?.Database.Migrate();
         }
     }
 }

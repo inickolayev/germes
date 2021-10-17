@@ -6,75 +6,42 @@ using System.Threading.Tasks;
 using Germes.Abstractions.Models.Results.Errors;
 using Germes.Accountant.Domain.Models;
 using Germes.Accountant.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Germes.Accountant.Implementations.Repositories
 {
-    /// <summary>
-    ///     Сервис хранения категорий
-    /// </summary>
     public class CategoryReadRepository : ICategoryReadRepository
     {
-        private static List<ExpenseCategory> DefaultExpenseCategories =>
-            new List<string>
-                {
-                    "Продукты",
-                    "Алкоголь",
-                    "Табак",
-                    "Животные",
-                    "Подписки"
-                }
-                .Select(name => new ExpenseCategory { Name = name })
-                .ToList();
-
-        private static List<IncomeCategory> DefaultIncomeCategories =>
-            new List<string>
-                {
-                    "ЗП",
-                    "Аванс",
-                    "Подработка"
-                }
-                .Select(name => new IncomeCategory { Name = name })
-                .ToList();
-
+        private readonly IQueryable<Category> _categories;
+        private readonly IQueryable<Category> _expenseCategories;
+        private readonly IQueryable<Category> _incomeCategories;
         
-        private readonly Session _session;
-        private readonly List<ExpenseCategory> _expenseCategories = DefaultExpenseCategories;
-        private readonly List<IncomeCategory> _incomeCategories = DefaultIncomeCategories;
-        
-        public CategoryReadRepository()
+        public CategoryReadRepository(IQueryable<Category> categories)
         {
+            _categories = categories.AsNoTracking();
+            _expenseCategories = categories.Where(c => c.CategoryType == CategoryTypes.Expose);
+            _incomeCategories = categories.Where(c => c.CategoryType == CategoryTypes.Income);
         }
 
-        public async Task<ExpenseCategory> GetExpenseCategoryAsync(string category, CancellationToken token)
-           => _expenseCategories.SingleOrDefault(c => c.Name.Equals(category, StringComparison.OrdinalIgnoreCase));
+        public async Task<Category> GetCategory(Guid categoryId, CancellationToken token)
+            => await _categories.FirstOrDefaultAsync(c => c.Id == categoryId, token);
 
-        public async Task<ExpenseCategory> AddExpenseCategoryAsync(string category, string description, CancellationToken token)
-        {
-            if (_expenseCategories.Any(c => c.Name == category))
-                throw new Exception(CategoryErrors.CategoryNotExist(category).Message);
-            var ctg = new ExpenseCategory
-            {
-                Name = category,
-                Description = description
-            };
-            _expenseCategories.Add(ctg);
-            return ctg;
-        }
+        public async Task<Category> GetCategory(Guid userId, string categoryName, CancellationToken token)
+            => await _categories
+                .Where(c => c.UserId == userId)
+                .Where(c => c.CategoryType == CategoryTypes.Expose)
+                .SingleOrDefaultAsync(c => c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase), token);
 
-        public async Task<IncomeCategory> GetIncomeCategoryAsync(string category, CancellationToken token)
-           => _incomeCategories.SingleOrDefault(c => c.Name.Equals(category, StringComparison.OrdinalIgnoreCase));
+        public async Task<Category> GetExpenseCategory(Guid userId, string categoryName, CancellationToken token)
+           => await _expenseCategories
+               .Where(c => c.UserId == userId)
+               .Where(c => c.CategoryType == CategoryTypes.Expose)
+               .SingleOrDefaultAsync(c => c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase), token);
 
-        public async Task<IncomeCategory> AddIncomeCategoryAsync(string category, string description, CancellationToken token)
-        {
-            if (_incomeCategories.Any(c => c.Name == category))
-                throw new Exception(CategoryErrors.CategoryNotExist(category).Message);
-            var ctg = new IncomeCategory
-            {
-                Name = category,
-                Description = description
-            };
-            _incomeCategories.Add(ctg);
-            return ctg;
-        }
+        public async Task<Category> GetIncomeCategory(Guid userId, string categoryName, CancellationToken token)
+            => await _expenseCategories
+                .Where(c => c.UserId == userId)
+                .Where(c => c.CategoryType == CategoryTypes.Expose)
+                .SingleOrDefaultAsync(c => c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase), token);
     }
 }

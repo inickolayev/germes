@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
 using Germes.Abstractions.Models.Results;
@@ -11,6 +12,9 @@ using Germes.Accountant.Domain.Services;
 using Germes.Domain.Data;
 using Germes.Domain.Plugins;
 using Germes.Implementations.Plugins;
+using Germes.User.Domain.Services;
+using Microsoft.Extensions.Primitives;
+using Inbound = Germes.Accountant.Contracts.Inbound;
 
 namespace Germes.Accountant.Implementations.Plugins
 {
@@ -19,24 +23,17 @@ namespace Germes.Accountant.Implementations.Plugins
     /// </summary>
     public class AccountantPlugin : IBotPlugin
     {
-        private readonly IAccountantReadRepository _accountantRepository;
-        private readonly IAccountantRegisterRepository _accountantRegisterRepository;
-        private readonly ICategoryReadRepository _categoryReadRepository;
-        private readonly ICategoryRegisterRepository _categoryRegisterRepository;
+        private readonly IUserService _userService;
+        private readonly IAccountantService _accountantService;
         private readonly IEnumerable<ICommandParser> _commandParsers;
         
         public bool IsAllow => true;
 
-        public AccountantPlugin(IAccountantReadRepository accountantRepository,
-            IAccountantRegisterRepository accountantRegisterRepository,
-            ICategoryReadRepository categoryReadRepository,
-            ICategoryRegisterRepository categoryRegisterRepository,
+        public AccountantPlugin(IUserService userService,
             IAccountantService accountantService)
         {
-            _accountantRepository = accountantRepository;
-            _accountantRegisterRepository = accountantRegisterRepository;
-            _categoryReadRepository = categoryReadRepository;
-            _categoryRegisterRepository = categoryRegisterRepository;
+            _userService = userService;
+            _accountantService = accountantService;
             _commandParsers = new[]
             {
                 new CommandParser("{cost}{category}{?comment}")
@@ -49,48 +46,77 @@ namespace Germes.Accountant.Implementations.Plugins
         public async Task<PluginResult> HandleAsync(BotMessage message, CancellationToken token)
         {
             var text = message.Text;
+            var chatId = message.ChatId;
+            
             var parser = _commandParsers.First(pr => pr.Contains(text));
             var parsingResult = parser.Parse(text);
             var cost = parsingResult.GetDecimal("cost");
-
+            var user = await _userService.GetUserAsync(chatId, token);
+            
             var comment = parsingResult.GetString("comment");
             var categoryName = parsingResult.GetString("category");
-            var categoryExpense = await _categoryReadRepository.GetExpenseCategoryAsync(categoryName, token);
-            var categoryIncome = await _categoryReadRepository.GetIncomeCategoryAsync(categoryName, token);
+            var categoryExpense = await _accountantService.GetExpenseCategory(user.Id, categoryName, token);
+            var categoryIncome = await _accountantService.GetIncomeCategory(user.Id, categoryName, token);
 
+            StringBuilder result = new();
+            var from = GetCurrentMonthDate(10);
+            var to = from.AddMonths(1);
+
+            if (categoryExpense == null && categoryIncome == null)
+            {
+                categoryExpense = await _accountantService.AddCategory(new Inbound.AddExpenseCategoryRequest
+                {
+                    Name = categoryName
+                }, token);
+                result.AppendLine($"Добавлена новая категория расходов \"{categoryName}\"");
+            }
+            
             if (categoryExpense != null)
             {
-                var expense = new Expense
+                var expense = new Inbound.AddTransactionRequest
                 {
                     Cost = cost,
-                    Date = DateTime.Now,
-                    Category = categoryExpense
+                    Comment = comment,
+                    CreatedAt = DateTime.Now,
+                    CategoryId = categoryExpense.Id,
+                    UserId = user.Id
                 };
-
-                await _accountantRegisterRepository.AddAsync(expense, token);
+                await _accountantService.AddTransaction(expense, token);
+                
+                var categoryBalance = await _accountantService.GetBalance(user.Id, categoryExpense.Id, from, to, token);
+                var fromStr = from.ToShortDateString();
+                var toStr = from.ToShortDateString();
+                result.AppendLine($"Траты по категории \"{categoryName}\" ({fromStr} - {toStr}): {categoryBalance} руб.\n");
             }
             else if (categoryIncome != null)
             {
-                var income = new Income
+                var income = new Inbound.AddTransactionRequest()
                 {
                     Cost = cost,
-                    Date = DateTime.Now,
-                    Category = categoryIncome
+                    Comment = comment,
+                    CreatedAt = DateTime.Now,
+                    CategoryId = categoryIncome.Id,
+                    UserId = user.Id
                 };
-
-                await _accountantRegisterRepository.AddAsync(income, token);
-            }
-            else
-            {
-                await _categoryRegisterRepository.AddExpenseCategoryAsync(categoryName, "", token);
+                await _accountantService.AddTransaction(income, token);
+                
+                var categoryBalance = await _accountantService.GetBalance(user.Id, categoryIncome.Id, from, to, token);
+                var fromStr = from.ToShortDateString();
+                var toStr = from.ToShortDateString();
+                result.AppendLine($"Получения по категории \"{categoryName}\" ({fromStr} - {toStr}): {categoryBalance} руб.\n");
             }
            
-            var categoryBalance = await _accountantRepository.GetBalanceAsync(string.Empty, token);
-            var balance = await _accountantRepository.GetBalanceAsync(string.Empty, token);
+            var balance = await _accountantService.GetBalance(user.Id, token);
+            result.Append($"Остаток по счету: {balance} руб.");
+            
+            return PluginResult.Success(result.ToString());
+        }
 
-            var result = $"Остаток по категории: {balance} руб.\n"
-                + $"Остаток по счету: {balance} руб.";
-            return PluginResult.Success(result);
+        private DateTime GetCurrentMonthDate(int dayOfMonth)
+        {
+            var today = DateTime.Now;
+            var newDate = new DateTime(today.Year, today.Month, dayOfMonth);
+            return newDate;
         }
     }
 }

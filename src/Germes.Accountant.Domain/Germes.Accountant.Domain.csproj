@@ -6,6 +6,7 @@
 
     <ItemGroup>
       <ProjectReference Include="..\Germes.Abstractions\Germes.Abstractions.csproj" />
+      <ProjectReference Include="..\Germes.Accountant.Contracts\Germes.Accountant.Contracts.csproj" />
     </ItemGroup>
 
 </Project>

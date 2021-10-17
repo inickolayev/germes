@@ -11,7 +11,13 @@
     <PackageReference Include="MediatR" Version="8.1.0" />
     <PackageReference Include="MediatR.Extensions.Microsoft.DependencyInjection" Version="8.1.0" />
     <PackageReference Include="Microsoft.AspNetCore.Mvc.NewtonsoftJson" Version="3.1.7" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
+    <PackageReference Include="Microsoft.EntityFrameworkCore.Design" Version="5.0.11">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
     <PackageReference Include="Microsoft.VisualStudio.Azure.Containers.Tools.Targets" Version="1.10.9" />
+    <PackageReference Include="Pomelo.EntityFrameworkCore.MySql" Version="5.0.2" />
     <PackageReference Include="Swashbuckle.AspNetCore.Swagger" Version="5.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerGen" Version="5.5.1" />
     <PackageReference Include="Swashbuckle.AspNetCore.SwaggerUi" Version="5.5.1" />
@@ -20,9 +26,11 @@
 
   <ItemGroup>
     <ProjectReference Include="..\Germes.Abstractions\Germes.Abstractions.csproj" />
+    <ProjectReference Include="..\Germes.Accountant.DataAccess\Germes.Accountant.DataAccess.csproj" />
     <ProjectReference Include="..\Germes.Accountant.Implementations\Germes.Accountant.Implementations.csproj" />
     <ProjectReference Include="..\Germes.Implementations\Germes.Implementations.csproj" />
     <ProjectReference Include="..\Germes.Telegram\Germes.Telegram.csproj" />
+    <ProjectReference Include="..\Germes.User.Implementations\Germes.User.Implementations.csproj" />
     <ProjectReference Include="..\Ngrok.Adapter\Ngrok.Adapter.csproj" />
   </ItemGroup>
 

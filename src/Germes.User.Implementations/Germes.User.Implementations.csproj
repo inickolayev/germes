@@ -1,0 +1,17 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+    <PropertyGroup>
+        <TargetFramework>net5.0</TargetFramework>
+    </PropertyGroup>
+
+    <ItemGroup>
+      <ProjectReference Include="..\Germes.Implementations\Germes.Implementations.csproj" />
+      <ProjectReference Include="..\Germes.User.DataAccess\Germes.User.DataAccess.csproj" />
+      <ProjectReference Include="..\Germes.User.Domain\Germes.User.Domain.csproj" />
+    </ItemGroup>
+
+    <ItemGroup>
+      <PackageReference Include="Microsoft.EntityFrameworkCore" Version="5.0.11" />
+    </ItemGroup>
+
+</Project>
