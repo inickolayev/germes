@@ -6,15 +6,12 @@ using System.Threading;
 using System.Threading.Tasks;
 using Germes.Abstractions.Models.Results;
 using Germes.Abstractions.Services;
-using Germes.Accountant.Domain.Models;
-using Germes.Accountant.Domain.Repositories;
 using Germes.Accountant.Domain.Services;
 using Germes.Domain.Data;
 using Germes.Domain.Plugins;
 using Germes.Implementations.Plugins;
 using Germes.User.Contracts.Inbound;
 using Germes.User.Domain.Services;
-using Microsoft.Extensions.Primitives;
 using Inbound = Germes.Accountant.Contracts.Inbound;
 
 namespace Germes.Accountant.Implementations.Plugins

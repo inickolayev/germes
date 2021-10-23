@@ -1,6 +1,5 @@
 using System.Collections.Generic;
 using System.Linq;
-using Germes.Abstractions.Models;
 using Germes.Domain.Exceptions;
 using Germes.Implementations.Plugins;
 using NUnit.Framework;

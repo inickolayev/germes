@@ -3,7 +3,6 @@ using System.Threading;
 using System.Threading.Tasks;
 using Germes.Accountant.Domain.Models;
 using Inbound = Germes.Accountant.Contracts.Inbound;
-using Dto = Germes.Accountant.Contracts.Dto;
 
 namespace Germes.Accountant.Domain.Services
 {

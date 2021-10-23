@@ -2,13 +2,11 @@
 using System.Threading;
 using System.Threading.Tasks;
 using Germes.Abstractions.Extensions;
-using Germes.Accountant.Contracts.Dto;
 using Germes.Accountant.Domain.Models;
 using Germes.Accountant.Domain.Repositories;
 using Germes.Accountant.Domain.Services;
 using Germes.Accountant.Domain.UnitOfWork;
 using Inbound = Germes.Accountant.Contracts.Inbound;
-using Dto = Germes.Accountant.Contracts.Dto;
 
 namespace Germes.Accountant.Implementations.Services
 {

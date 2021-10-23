@@ -1,6 +1,4 @@
-﻿using System;
-using System.Linq;
-using Germes.Accountant.Domain.Models;
+﻿using Germes.Accountant.Domain.Models;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.ValueGeneration;
 

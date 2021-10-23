@@ -1,7 +1,4 @@
-﻿using System.Collections.Generic;
-using System.Threading;
-using System.Threading.Tasks;
-using Germes.Accountant.Domain.Models;
+﻿using Germes.Accountant.Domain.Models;
 using Germes.Accountant.Domain.Repositories;
 using Germes.Implementations.Repositories;
 using Microsoft.EntityFrameworkCore;

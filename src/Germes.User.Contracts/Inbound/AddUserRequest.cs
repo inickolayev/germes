@@ -1,6 +1,4 @@
-﻿using System;
-
-namespace Germes.User.Contracts.Inbound
+﻿namespace Germes.User.Contracts.Inbound
 {
     public class AddUserRequest
     {
