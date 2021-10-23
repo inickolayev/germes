@@ -1,20 +1,26 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Inbound = Germes.User.Contracts.Inbound;
 
 namespace Germes.User.Domain.Models
 {
     public class User
     {
-        public Guid Id { get; set; }
-        public string ChatId { get; set; }
-        public string Name { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public TimeSpan RowVersion { get; set; }
+        public Guid Id { get; private set; }
+        public string ChatId { get; private set; }
+        public string Name { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        [Timestamp] public byte[] RowVersion { get; private set; }
 
         public User(Inbound.AddUserRequest request)
         {
             ChatId = request.ChatId;
             Name = request.Name;
+            CreatedAt = DateTime.UtcNow;
         }
+        
+        // For EF
+        internal User()
+        {}
     }
 }

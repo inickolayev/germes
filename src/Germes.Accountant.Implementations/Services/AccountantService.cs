@@ -66,30 +66,30 @@ namespace Germes.Accountant.Implementations.Services
             DateTime @from,
             DateTime to,
             CancellationToken cancellationToken)
-            => await _transactionReadRepository.GetBalance(userId, categoryId, DefaultDateFrom, DefaultDateTo, cancellationToken);
+            => await _transactionReadRepository.GetBalance(userId, categoryId, @from, to, cancellationToken);
 
-        public async Task<Dto.ExpenseCategoryDto> GetExpenseCategory(Guid userId, string categoryName, CancellationToken token)
-            => (await _categoryReadRepository.GetExpenseCategory(userId, categoryName, token)).ToExpenseCategoryDto();
+        public async Task<Category> GetExpenseCategory(Guid userId, string categoryName, CancellationToken token)
+            => (await _categoryReadRepository.GetExpenseCategory(userId, categoryName, token));
 
-        public async Task<Dto.IncomeCategoryDto> GetIncomeCategory(Guid userId, string categoryName, CancellationToken token)
-            => (await _categoryReadRepository.GetIncomeCategory(userId, categoryName, token)).ToIncomeCategoryDto();
+        public async Task<Category> GetIncomeCategory(Guid userId, string categoryName, CancellationToken token)
+            => (await _categoryReadRepository.GetIncomeCategory(userId, categoryName, token));
 
-        public async Task<ExpenseCategoryDto> AddCategory(Inbound.AddExpenseCategoryRequest request, CancellationToken token)
+        public async Task<Category> AddCategory(Inbound.AddExpenseCategoryRequest request, CancellationToken token)
         {
             var newCategory = new Category(request);
             _unitOfWork.Categories.RegisterNew(newCategory);
             await _unitOfWork.Complete(token);
 
-            return newCategory.ToExpenseCategoryDto();
+            return newCategory;
         }
 
-        public async Task<IncomeCategoryDto> AddCategory(Inbound.AddIncomeCategoryRequest request, CancellationToken token)
+        public async Task<Category> AddCategory(Inbound.AddIncomeCategoryRequest request, CancellationToken token)
         {
             var newCategory = new Category(request);
             _unitOfWork.Categories.RegisterNew(newCategory);
             await _unitOfWork.Complete(token);
 
-            return newCategory.ToIncomeCategoryDto();
+            return newCategory;
         }
     }
 }

@@ -1,17 +1,18 @@
 ﻿using System;
+using System.ComponentModel.DataAnnotations;
 using Inbound = Germes.Accountant.Contracts.Inbound;
 
 namespace Germes.Accountant.Domain.Models
 {
     public class Transaction
     {
-        public Guid Id { get; set; }
-        public decimal Cost { get; set; }
-        public string Comment { get; set; }
-        public Guid UserId { get; set; }
-        public Guid CategoryId { get; set; }
-        public DateTime CreatedAt { get; set; }
-        public TimeSpan RowVersion { get; set; }
+        public Guid Id { get; private set; }
+        public decimal Cost { get; private set; }
+        public string Comment { get; private set; }
+        public Guid UserId { get; private set; }
+        public Guid CategoryId { get; private set; }
+        public DateTime CreatedAt { get; private set; }
+        [Timestamp] public byte[] RowVersion { get; private set; }
 
         public Transaction(Inbound.AddTransactionRequest request)
         {
@@ -19,7 +20,12 @@ namespace Germes.Accountant.Domain.Models
             Comment = request.Comment;
             UserId = request.UserId;
             CategoryId = request.CategoryId;
-            CreatedAt = request.CreatedAt;
+            CreatedAt = DateTime.UtcNow;
+        }
+        
+        // For EF
+        internal Transaction()
+        {
         }
     }
 }

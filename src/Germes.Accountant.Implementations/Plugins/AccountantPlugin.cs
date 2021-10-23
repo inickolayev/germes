@@ -12,6 +12,7 @@ using Germes.Accountant.Domain.Services;
 using Germes.Domain.Data;
 using Germes.Domain.Plugins;
 using Germes.Implementations.Plugins;
+using Germes.User.Contracts.Inbound;
 using Germes.User.Domain.Services;
 using Microsoft.Extensions.Primitives;
 using Inbound = Germes.Accountant.Contracts.Inbound;
@@ -47,18 +48,25 @@ namespace Germes.Accountant.Implementations.Plugins
         {
             var text = message.Text;
             var chatId = message.ChatId;
+            StringBuilder result = new();
             
             var parser = _commandParsers.First(pr => pr.Contains(text));
             var parsingResult = parser.Parse(text);
             var cost = parsingResult.GetDecimal("cost");
             var user = await _userService.GetUserAsync(chatId, token);
+
+            if (user == null)
+            {
+                var name = "Some user";
+                await _userService.AddUserAsync(new AddUserRequest { ChatId = chatId, Name = name }, token);
+                result.AppendLine($"Добро пожаловать, {name}!");
+            }
             
             var comment = parsingResult.GetString("comment");
             var categoryName = parsingResult.GetString("category");
             var categoryExpense = await _accountantService.GetExpenseCategory(user.Id, categoryName, token);
             var categoryIncome = await _accountantService.GetIncomeCategory(user.Id, categoryName, token);
 
-            StringBuilder result = new();
             var from = GetCurrentMonthDate(10);
             var to = from.AddMonths(1);
 
@@ -66,6 +74,7 @@ namespace Germes.Accountant.Implementations.Plugins
             {
                 categoryExpense = await _accountantService.AddCategory(new Inbound.AddExpenseCategoryRequest
                 {
+                    UserId = user.Id,
                     Name = categoryName
                 }, token);
                 result.AppendLine($"Добавлена новая категория расходов \"{categoryName}\"");
@@ -77,7 +86,6 @@ namespace Germes.Accountant.Implementations.Plugins
                 {
                     Cost = cost,
                     Comment = comment,
-                    CreatedAt = DateTime.Now,
                     CategoryId = categoryExpense.Id,
                     UserId = user.Id
                 };
@@ -85,8 +93,8 @@ namespace Germes.Accountant.Implementations.Plugins
                 
                 var categoryBalance = await _accountantService.GetBalance(user.Id, categoryExpense.Id, from, to, token);
                 var fromStr = from.ToShortDateString();
-                var toStr = from.ToShortDateString();
-                result.AppendLine($"Траты по категории \"{categoryName}\" ({fromStr} - {toStr}): {categoryBalance} руб.\n");
+                var toStr = to.ToShortDateString();
+                result.AppendLine($"Траты по категории \"{categoryName}\" ({fromStr} - {toStr}): {categoryBalance:0} руб.\n");
             }
             else if (categoryIncome != null)
             {
@@ -94,7 +102,6 @@ namespace Germes.Accountant.Implementations.Plugins
                 {
                     Cost = cost,
                     Comment = comment,
-                    CreatedAt = DateTime.Now,
                     CategoryId = categoryIncome.Id,
                     UserId = user.Id
                 };
@@ -107,7 +114,7 @@ namespace Germes.Accountant.Implementations.Plugins
             }
            
             var balance = await _accountantService.GetBalance(user.Id, token);
-            result.Append($"Остаток по счету: {balance} руб.");
+            result.Append($"Остаток по счету: {balance:0} руб.");
             
             return PluginResult.Success(result.ToString());
         }

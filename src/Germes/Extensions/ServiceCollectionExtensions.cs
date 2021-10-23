@@ -10,8 +10,10 @@ using Germes.Domain.Plugins;
 using Germes.User.DataAccess;
 using Germes.User.Domain.Repositories;
 using Germes.User.Domain.Services;
+using Germes.User.Domain.UnitOfWork;
 using Germes.User.Implementations.Repositories;
 using Germes.User.Implementations.Services;
+using Germes.User.Implementations.UnitOfWork;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.DependencyInjection;
 
@@ -25,8 +27,12 @@ namespace Germes.Extensions
             => services.AddDbContextPool<TDbContext>(
                 options =>
                 {
-                    options.UseMySql(ServerVersion.Parse(connectionString),
-                        b => { b.EnableRetryOnFailure(2); });
+                    options.UseMySql(connectionString, ServerVersion.AutoDetect(connectionString),
+                        b =>
+                        {
+                            b.EnableRetryOnFailure(2);
+                            b.MigrationsAssembly(nameof(Germes));
+                        });
                     // options.UseLoggerFactory(LoggerFactory.Create(builder => { builder.AddConsole(); }));
                 });
 
@@ -35,7 +41,7 @@ namespace Germes.Extensions
                 .AddScoped<IUserService, UserService>()
                 .AddScoped<IUserReadRepository>(sp =>
                     new UserReadRepository(sp.GetRequiredService<UserDbContext>().Users))
-                .AddScoped<IAccountantUnitOfWork, AccountantUnitOfWork>();
+                .AddScoped<IUserUnitOfWork, UserUnitOfWork>();
 
         public static IServiceCollection AddAccountantDomain(this IServiceCollection services)
             => services

@@ -6,6 +6,7 @@ using System.Threading.Tasks;
 using Germes.Abstractions.Extensions;
 using Germes.Accountant.Domain.Models;
 using Germes.Accountant.Domain.Repositories;
+using Microsoft.EntityFrameworkCore;
 
 namespace Germes.Accountant.Implementations.Repositories
 {
@@ -45,12 +46,12 @@ namespace Germes.Accountant.Implementations.Repositories
 
         public async Task<decimal> GetBalance(Guid userId, Guid? categoryId, DateTime @from, DateTime to, CancellationToken token)
         {
-            var incomeSum = _transactions
+            var incomeSum = await _transactions
                 .Where(tr => tr.UserId == userId)
                 .Where(tr => tr.CategoryId == categoryId)
-                .Where(tr => tr.CreatedAt.IsBetween(@from, to))
+                .Where(tr => tr.CreatedAt >= @from && tr.CreatedAt <= to)
                 .Select(inc => inc.Cost)
-                .Sum();
+                .SumAsync(token);
             return incomeSum;
         }
     }

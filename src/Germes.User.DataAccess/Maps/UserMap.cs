@@ -3,7 +3,7 @@ using Microsoft.EntityFrameworkCore.ValueGeneration;
 
 namespace Germes.User.DataAccess.Maps
 {
-    public static class CategoryMap
+    public static class UserMap
     {
         public static ModelBuilder Build<T>(this ModelBuilder modelBuilder) where T: Domain.Models.User
         {

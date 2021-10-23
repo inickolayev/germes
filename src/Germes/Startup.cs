@@ -108,17 +108,17 @@ namespace Germes
 
         private void UpdateDatabase(IApplicationBuilder app)
         {
+            UpdateDatabase<AccountantDbContext>(app);
+            UpdateDatabase<UserDbContext>(app);
+        }
+        
+        private void UpdateDatabase<TDbContext>(IApplicationBuilder app)
+            where TDbContext : DbContext
+        {
             using var serviceScope = app.ApplicationServices
                 .GetRequiredService<IServiceScopeFactory>()
                 .CreateScope();
-            UpdateDatabase<AccountantDbContext>(serviceScope);
-            UpdateDatabase<UserDbContext>(serviceScope);
-        }
-        
-        private void UpdateDatabase<TDbContext>(IServiceScope scope)
-            where TDbContext : DbContext
-        {
-            using var context = scope.ServiceProvider.GetService<TDbContext>();
+            using var context = serviceScope.ServiceProvider.GetService<TDbContext>();
             context?.Database.Migrate();
         }
     }

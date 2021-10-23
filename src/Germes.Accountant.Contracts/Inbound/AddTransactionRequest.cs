@@ -8,6 +8,5 @@ namespace Germes.Accountant.Contracts.Inbound
         public string Comment { get; set; }
         public Guid UserId { get; set; }
         public Guid CategoryId { get; set; }
-        public DateTime CreatedAt { get; set; }
     }
 }

@@ -36,12 +36,12 @@ namespace Germes.Accountant.Implementations.Repositories
            => await _expenseCategories
                .Where(c => c.UserId == userId)
                .Where(c => c.CategoryType == CategoryTypes.Expose)
-               .SingleOrDefaultAsync(c => c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase), token);
+               .SingleOrDefaultAsync(c => c.Name == categoryName, token);
 
         public async Task<Category> GetIncomeCategory(Guid userId, string categoryName, CancellationToken token)
             => await _expenseCategories
                 .Where(c => c.UserId == userId)
                 .Where(c => c.CategoryType == CategoryTypes.Expose)
-                .SingleOrDefaultAsync(c => c.Name.Equals(categoryName, StringComparison.OrdinalIgnoreCase), token);
+                .SingleOrDefaultAsync(c => c.Name == categoryName, token);
     }
 }

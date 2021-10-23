@@ -31,9 +31,9 @@ namespace Germes.Accountant.Domain.Services
             DateTime to,
             CancellationToken cancellationToken);
 
-        Task<Dto.ExpenseCategoryDto> GetExpenseCategory(Guid userId, string categoryName, CancellationToken token);
-        Task<Dto.IncomeCategoryDto> GetIncomeCategory(Guid userId, string categoryName, CancellationToken token);
-        Task<Dto.ExpenseCategoryDto> AddCategory(Inbound.AddExpenseCategoryRequest request, CancellationToken token);
-        Task<Dto.IncomeCategoryDto> AddCategory(Inbound.AddIncomeCategoryRequest request, CancellationToken token);
+        Task<Category> GetExpenseCategory(Guid userId, string categoryName, CancellationToken token);
+        Task<Category> GetIncomeCategory(Guid userId, string categoryName, CancellationToken token);
+        Task<Category> AddCategory(Inbound.AddExpenseCategoryRequest request, CancellationToken token);
+        Task<Category> AddCategory(Inbound.AddIncomeCategoryRequest request, CancellationToken token);
     }
 }
