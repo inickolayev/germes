@@ -7,6 +7,7 @@ namespace Germes.Accountant.Domain.Repositories
 {
     public interface ICategoryReadRepository
     {
+        Task<Category[]> GetCategories(Guid userId, CancellationToken cancellationToken);
         Task<Category> GetExpenseCategory(Guid userId, string categoryName, CancellationToken token);
         
         Task<Category> GetIncomeCategory(Guid userId, string categoryName, CancellationToken token);

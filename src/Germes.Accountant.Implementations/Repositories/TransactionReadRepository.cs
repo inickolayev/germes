@@ -24,20 +24,20 @@ namespace Germes.Accountant.Implementations.Repositories
 
         public async Task<decimal> GetBalance(Guid userId, CancellationToken token)
         {
-            var incomeSum = _transactions
+            var incomeSum = await _transactions
                 .Where(tr => tr.UserId == userId)
                 .Where(tr => _categories
                     .FirstOrDefault(c => c.Id == tr.CategoryId)
                     .CategoryType == CategoryTypes.Income)
                 .Select(inc => inc.Cost)
-                .Sum();
-            var expenseSum = _transactions
+                .SumAsync(token);
+            var expenseSum = await _transactions
                 .Where(tr => tr.UserId == userId)
                 .Where(tr => _categories
                     .FirstOrDefault(c => c.Id == tr.CategoryId)
                     .CategoryType == CategoryTypes.Expose)
                 .Select(inc => inc.Cost)
-                .Sum();
+                .SumAsync(token);
             var result = incomeSum - expenseSum;
             return result;
         }
@@ -52,5 +52,14 @@ namespace Germes.Accountant.Implementations.Repositories
                 .SumAsync(token);
             return incomeSum;
         }
+
+        public async Task<Transaction[]> GetTransactions(Guid userId, Guid? categoryId, DateTime @from,
+            DateTime to, CancellationToken cancellationToken)
+            => await _transactions
+                .Where(tr => tr.UserId == userId)
+                .Where(tr => !categoryId.HasValue || tr.CategoryId == categoryId)
+                .Where(tr => tr.CreatedAt >= @from && tr.CreatedAt <= to)
+                .OrderBy(tr => tr.CreatedAt)
+                .ToArrayAsync(cancellationToken);
     }
 }

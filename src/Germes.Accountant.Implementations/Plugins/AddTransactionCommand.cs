@@ -26,6 +26,9 @@ namespace Germes.Accountant.Implementations.Plugins
         {
         }
 
+        public override string GetHelpDescription()
+            => $"* \"{CommandTemplate}\" - {AccountantText.AddTransactionDescription}";
+
         class AddTransactionCommandHandler : ICommandHandler
         {
             private readonly IUserService _userService;
@@ -104,8 +107,6 @@ namespace Germes.Accountant.Implementations.Plugins
 
                     var categoryBalance =
                         await _accountantService.GetBalance(user.Id, categoryIncome.Id, from, to, token);
-                    var fromStr = from.ToShortDateString();
-                    var toStr = from.ToShortDateString();
                     result.AppendLine(
                         AccountantText.AddedNewIncomeTransaction(categoryName, from, to, categoryBalance));
                 }
@@ -124,8 +125,5 @@ namespace Germes.Accountant.Implementations.Plugins
                 return newDate;
             }
         }
-
-        public override string GetHelpDescription()
-            => $"* \"{CommandTemplate}\" - {AccountantText.AddTransactionDescription}";
     }
 }

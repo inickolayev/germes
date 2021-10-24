@@ -35,6 +35,9 @@ namespace Germes.Accountant.Implementations.Services
             await _unitOfWork.Complete(cancellationToken);
         }
 
+        public async Task<Category[]> GetCategories(Guid userId, CancellationToken cancellationToken)
+            => await _categoryReadRepository.GetCategories(userId, cancellationToken);
+
         public async Task<decimal> GetBalance(Guid userId, CancellationToken cancellationToken)
             => await _transactionReadRepository.GetBalance(userId, cancellationToken);
         
@@ -65,6 +68,24 @@ namespace Germes.Accountant.Implementations.Services
             DateTime to,
             CancellationToken cancellationToken)
             => await _transactionReadRepository.GetBalance(userId, categoryId, @from, to, cancellationToken);
+
+        public async Task<Transaction[]> GetTransactions(Guid userId,
+            string categoryName,
+            DateTime @from,
+            DateTime to,
+            CancellationToken cancellationToken)
+        {
+            var category = await _categoryReadRepository.GetCategory(userId, categoryName, cancellationToken);
+            var transactions = await _transactionReadRepository.GetTransactions(userId, category.Id, @from, to, cancellationToken);
+            return transactions;
+        }
+        public async Task<Transaction[]> GetTransactions(Guid userId,
+            Guid? categoryId,
+            DateTime @from,
+            DateTime to,
+            CancellationToken cancellationToken)
+            => await _transactionReadRepository.GetTransactions(userId, categoryId, @from, to, cancellationToken);
+
 
         public async Task<Category> GetExpenseCategory(Guid userId, string categoryName, CancellationToken token)
             => (await _categoryReadRepository.GetExpenseCategory(userId, categoryName, token));

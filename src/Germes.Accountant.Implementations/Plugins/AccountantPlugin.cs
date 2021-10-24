@@ -15,7 +15,8 @@ namespace Germes.Accountant.Implementations.Plugins
         public AccountantPlugin(IServiceProvider serviceProvider)
             : base(
                 new AddTransactionCommand(serviceProvider),
-                new GetBalanceCommand(serviceProvider)
+                new GetBalanceCommand(serviceProvider),
+                new GetTransactionsCommand(serviceProvider)
             )
         {
         }

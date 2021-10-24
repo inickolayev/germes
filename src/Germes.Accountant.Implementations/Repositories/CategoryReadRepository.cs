@@ -21,6 +21,11 @@ namespace Germes.Accountant.Implementations.Repositories
             _incomeCategories = categories.Where(c => c.CategoryType == CategoryTypes.Income);
         }
 
+        public async Task<Category[]> GetCategories(Guid userId, CancellationToken cancellationToken)
+            => await _categories
+                .Where(c => c.UserId == userId)
+                .ToArrayAsync(cancellationToken);
+
         public async Task<Category> GetCategory(Guid categoryId, CancellationToken token)
             => await _categories.FirstOrDefaultAsync(c => c.Id == categoryId, token);
 

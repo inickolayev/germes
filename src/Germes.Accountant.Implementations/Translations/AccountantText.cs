@@ -35,5 +35,6 @@ namespace Germes.Accountant.Implementations.Translations
         
         public const string AddTransactionDescription = "добавить новый расход/приход";
         public const string GetBalanceDescription = "получить баланс";
+        public const string NoTransactionsFound = "У вас нет ни одной записи...";
     }
 }

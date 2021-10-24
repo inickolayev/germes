@@ -8,7 +8,7 @@ namespace Germes.Accountant.Domain.Services
 {
     public interface IAccountantService
     {
-        Task AddTransaction(Inbound.AddTransactionRequest request, CancellationToken cancellationToken);
+        Task<Category[]> GetCategories(Guid userId, CancellationToken cancellationToken);
         
         Task<decimal> GetBalance(Guid userId, CancellationToken cancellationToken);
 
@@ -29,7 +29,18 @@ namespace Germes.Accountant.Domain.Services
             DateTime @from,
             DateTime to,
             CancellationToken cancellationToken);
+        Task<Transaction[]> GetTransactions(Guid userId,
+            Guid? categoryId,
+            DateTime @from,
+            DateTime to,
+            CancellationToken cancellationToken);
+        Task<Transaction[]> GetTransactions(Guid userId,
+            string categoryName,
+            DateTime @from,
+            DateTime to,
+            CancellationToken cancellationToken);
 
+        Task AddTransaction(Inbound.AddTransactionRequest request, CancellationToken cancellationToken);
         Task<Category> GetExpenseCategory(Guid userId, string categoryName, CancellationToken token);
         Task<Category> GetIncomeCategory(Guid userId, string categoryName, CancellationToken token);
         Task<Category> AddCategory(Inbound.AddExpenseCategoryRequest request, CancellationToken token);
