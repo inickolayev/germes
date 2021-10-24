@@ -13,7 +13,6 @@ using Germes.Implementations.Plugins;
 using Germes.User.Contracts.Inbound;
 using Germes.User.Domain.Services;
 using Microsoft.Extensions.DependencyInjection;
-using Inbound = Germes.Accountant.Contracts.Inbound;
 
 namespace Germes.Accountant.Implementations.Plugins
 {

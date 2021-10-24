@@ -6,7 +6,6 @@ using Germes.Abstractions.Models;
 using Germes.Abstractions.Models.Results;
 using Germes.Abstractions.Plugins;
 using Germes.Abstractions.Services;
-using Germes.Accountant.Domain.Services;
 using Germes.Domain.Data;
 using Germes.Help.Implementations.Translations;
 using Germes.Implementations.Plugins;

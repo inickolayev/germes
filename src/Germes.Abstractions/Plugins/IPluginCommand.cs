@@ -1,6 +1,5 @@
 ﻿using System.Threading;
 using System.Threading.Tasks;
-using Germes.Abstractions.Models;
 using Germes.Abstractions.Models.Results;
 using Germes.Domain.Data;
 
