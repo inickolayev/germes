@@ -20,9 +20,19 @@ namespace Germes.Implementations.Plugins
         }
         
         public Task<bool> CheckAsync(BotMessage message, CancellationToken token)
-            => Task.FromResult(_commands.Any(command => command.Check(message)));
+            => Task.FromResult(_commands.Any(command => command.Check(Normalize(message))));
 
         public Task<PluginResult> Handle(BotMessage message, CancellationToken token)
-            => _commands.First(command => command.Check(message)).Handle(message, token);
+            => _commands.First(command => command.Check(Normalize(message))).Handle(Normalize(message), token);
+
+        protected virtual BotMessage Normalize(BotMessage message)
+        {
+            return new BotMessage
+            {
+                ChatId = message.ChatId,
+                SourceId = message.SourceId,
+                Text = message.Text.ToLower()
+            };
+        }
     }
 }
