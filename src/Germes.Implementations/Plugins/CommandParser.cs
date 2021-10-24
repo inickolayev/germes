@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Runtime.CompilerServices;
 using System.Text.RegularExpressions;
 using Germes.Abstractions.Models;
 using Germes.Abstractions.Services;
@@ -11,10 +12,12 @@ namespace Germes.Implementations.Plugins
     public class CommandParser : ICommandParser
     {
         private readonly string _pattern;
-        private const string ItemPattern = "{\\??[a-zA-Z]*}";
+        private const string ConstPattern = "[а-яА-Я]+";
+        private const string ValuePattern = "{\\??[a-zA-Z]+}";
+        private static readonly string ItemPattern = string.Join("|", new[] {ConstPattern, ValuePattern});
         private static readonly string DefaultValue = string.Empty;
-        
-        public List<CommandKey> Keys = new List<CommandKey>();
+
+        public readonly List<CommandKey> Keys = new List<CommandKey>();
 
         public CommandParser(string pattern)
         {
@@ -22,20 +25,39 @@ namespace Germes.Implementations.Plugins
             var matches = new Regex(ItemPattern).Matches(_pattern);
             foreach (Match match in matches)
             {
-                var matchKey = match.Value;
-                var key = matchKey.Replace("{", "").Replace("}", "");
-                bool isOptional = key[0] == '?';
-                if (isOptional)
-                {
-                    key = key.Replace("?", "");
-                    var itemKey = new CommandKey(key, true);
-                    Keys.Add(itemKey);
-                }
-                else
-                {
-                    var itemKey = new CommandKey(key, false);
-                    Keys.Add(itemKey);
-                }
+                TryAddConstItem(match);
+                TryAddValueItem(match);
+            }
+        }
+
+        private void TryAddConstItem(Match match)
+        {
+            var matchKey = match.Value;
+            var isMatch = new Regex(ConstPattern).IsMatch(matchKey);
+            if (!isMatch) return;
+            
+            var itemKey = new CommandKey(matchKey, isOptional: false, isConst: true);
+            Keys.Add(itemKey);
+        }
+
+        private void TryAddValueItem(Match match)
+        {
+            var matchKey = match.Value;
+            var isMatch = new Regex(ValuePattern).IsMatch(matchKey);
+            if (!isMatch) return;
+            
+            var key = matchKey.Replace("{", "").Replace("}", "");
+            bool isOptional = key[0] == '?';
+            if (isOptional)
+            {
+                key = key.Replace("?", "");
+                var itemKey = new CommandKey(key, true);
+                Keys.Add(itemKey);
+            }
+            else
+            {
+                var itemKey = new CommandKey(key);
+                Keys.Add(itemKey);
             }
         }
         
@@ -69,21 +91,34 @@ namespace Germes.Implementations.Plugins
             foreach (var itemKey in Keys)
             {
                 var key = itemKey.Key;
-                if (itemKey.IsOptional)
-                {
-                    var value = values.Length > currentIndex
-                        ? values[currentIndex]
-                        : DefaultValue;
-                    var item = new CommandItem(key, value, true);
-                    items.Add(item);
-                }
-                else
+                if (itemKey.IsConst)
                 {
                     var value = values.Length > currentIndex
                         ? values[currentIndex]
                         : throw new CommandParserItemNotExistsException(key, command);
-                    var item = new CommandItem(key, value, false);
-                    items.Add(item);
+                    if (value != key)
+                    {
+                        throw new CommandParserItemNotExistsException(key, command);
+                    }
+                }
+                else
+                {
+                    if (itemKey.IsOptional)
+                    {
+                        var value = values.Length > currentIndex
+                            ? values[currentIndex]
+                            : DefaultValue;
+                        var item = new CommandItem(key, value, true);
+                        items.Add(item);
+                    }
+                    else
+                    {
+                        var value = values.Length > currentIndex
+                            ? values[currentIndex]
+                            : throw new CommandParserItemNotExistsException(key, command);
+                        var item = new CommandItem(key, value, false);
+                        items.Add(item);
+                    }
                 }
 
                 currentIndex++;
@@ -94,13 +129,15 @@ namespace Germes.Implementations.Plugins
 
         public class CommandKey
         {
-            public string Key { get; set; }
+            public string Key { get; }
             public bool IsOptional { get; }
+            public bool IsConst { get; }
 
-            public CommandKey(string key, bool isOptional = false)
+            public CommandKey(string key, bool isOptional = false, bool isConst = false)
             {
                 Key = key;
                 IsOptional = isOptional;
+                IsConst = isConst;
             }
         }
     }

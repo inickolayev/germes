@@ -67,6 +67,17 @@ namespace Germes.Tests.Plugins
             Assert.IsEmpty(comment);
         }
         
+        [TestCase("баланс", true)]
+        [TestCase("Баланс", false)]
+        [TestCase("баланC", false)]
+        public void ContainsConstTemplateRequest_Success(string command, bool expectedContains)
+        {
+            var commandParser = new CommandParser("баланс");
+            var contains = commandParser.Contains(command);
+            
+            Assert.AreEqual(expectedContains, contains);    
+        }
+        
         [Test]
         public void ParseFoodRequest_Error()
         {
