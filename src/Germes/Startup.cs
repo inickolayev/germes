@@ -71,6 +71,8 @@ namespace Germes
                     Version = _appSettings.Version
                 }));
             services.AddScoped<IPluginService, PluginService>();
+            services.AddScoped<ISourceAdapterFactory, SourceAdapterFactory>();
+            services.AddScoped<ISourceAdapter, TelegramSourceAdapter>();
             services.AddAccountantDomain();
             services.AddUserDomain();
         }

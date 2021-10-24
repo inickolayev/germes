@@ -29,7 +29,7 @@ namespace Germes.Implementations.Services
                     var check = await plugin.CheckAsync(message, token);
                     if (check)
                     {
-                        var result = await plugin.HandleAsync(message, token);
+                        var result = await plugin.Handle(message, token);
                         if (result.IsSuccess)
                         {
                             return new BotResult(result.Result.Message, result.Result.NeedToAnswer);

@@ -4,6 +4,7 @@ using System.Threading.Tasks;
 using Germes.Abstractions.Models.Results;
 using Germes.Data;
 using Germes.Domain.Data;
+using Germes.Implementations.Services;
 using Germes.Mediators.Extensions;
 using Germes.Mediators.Requests;
 using MediatR;
@@ -72,7 +73,8 @@ namespace Germes.Controllers
             var mess = new BotMessage
             {
                 ChatId = update.Message.Chat.Id.ToString(),
-                Text = update.Message.Text
+                Text = update.Message.Text,
+                SourceId = TelegramSourceAdapter.SourceId
             };
             var res = await _mediator.SendSafe<RequestNewMessage, BotResult>(new RequestNewMessage {Message = mess},
                 token);

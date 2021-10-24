@@ -10,5 +10,9 @@
         ///     Идентификатор чата
         /// </summary>
         public string ChatId { get; set; }
+        /// <summary>
+        ///     Идентификатор источника
+        /// </summary>
+        public string SourceId { get; set; }
     }
 }
