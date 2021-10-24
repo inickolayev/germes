@@ -20,6 +20,7 @@ using Germes.User.DataAccess;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Logging;
 using Germes.Extensions;
+using Germes.Service;
 
 namespace Germes
 {
@@ -59,8 +60,16 @@ namespace Germes
             services.AddSingleton(_botSettings);
 
             // Services
-            services.AddHostedService<InitService>();
-            services.AddSingleton<INgrokService>(s => new NgrokService(_botSettings.NgrokHost));
+            if (_botSettings.UseNgrok)
+            {
+                services.AddHostedService<InitService>();
+                services.AddSingleton<INgrokService>(s => new NgrokService(_botSettings.NgrokHost));
+            }
+            else
+            {
+                services.AddHostedService<TelegramPollingService>();
+            }
+            
             services.AddScoped(serv => new TelegramBotClient(_botSettings.Token));
             services.AddScoped<IBotService, BotService>();
             services.AddScoped<IApplicationInfoService>(sp => new ApplicationInfoService(
