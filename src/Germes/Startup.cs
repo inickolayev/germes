@@ -73,6 +73,7 @@ namespace Germes
             services.AddScoped<IPluginService, PluginService>();
             services.AddScoped<ISourceAdapterFactory, SourceAdapterFactory>();
             services.AddScoped<ISourceAdapter, TelegramSourceAdapter>();
+            services.AddHelpDomain();
             services.AddAccountantDomain();
             services.AddUserDomain();
         }

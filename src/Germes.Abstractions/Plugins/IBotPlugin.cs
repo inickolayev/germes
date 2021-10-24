@@ -1,9 +1,9 @@
-﻿using Germes.Domain.Data;
-using System.Threading;
+﻿using System.Threading;
 using System.Threading.Tasks;
 using Germes.Abstractions.Models.Results;
+using Germes.Domain.Data;
 
-namespace Germes.Domain.Plugins
+namespace Germes.Abstractions.Plugins
 {
     /// <summary>
     ///     Плагин обработки сообщений

@@ -10,7 +10,6 @@ using Germes.Accountant.Domain.Services;
 using Germes.Accountant.Implementations.Translations;
 using Germes.Data;
 using Germes.Domain.Data;
-using Germes.Domain.Plugins;
 using Germes.Implementations.Plugins;
 using Germes.User.Contracts.Inbound;
 using Germes.User.Domain.Services;

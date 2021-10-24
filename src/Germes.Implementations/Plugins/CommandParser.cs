@@ -12,7 +12,7 @@ namespace Germes.Implementations.Plugins
     public class CommandParser : ICommandParser
     {
         private readonly string _pattern;
-        private const string ConstPattern = "[а-яА-Я]+";
+        private const string ConstPattern = "[^{} ]+";
         private const string ValuePattern = "{\\??[a-zA-Z]+}";
         private static readonly string ItemPattern = string.Join("|", new[] {ConstPattern, ValuePattern});
         private static readonly string DefaultValue = string.Empty;

@@ -1,7 +1,7 @@
 ﻿using System.Collections.Generic;
 using System.Threading;
 using System.Threading.Tasks;
-using Germes.Domain.Plugins;
+using Germes.Abstractions.Plugins;
 
 namespace Germes.Abstractions.Services
 {

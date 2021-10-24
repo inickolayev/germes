@@ -28,6 +28,7 @@
     <ProjectReference Include="..\Germes.Abstractions\Germes.Abstractions.csproj" />
     <ProjectReference Include="..\Germes.Accountant.DataAccess\Germes.Accountant.DataAccess.csproj" />
     <ProjectReference Include="..\Germes.Accountant.Implementations\Germes.Accountant.Implementations.csproj" />
+    <ProjectReference Include="..\Germes.Help.Implementations\Germes.Help.Implementations.csproj" />
     <ProjectReference Include="..\Germes.Implementations\Germes.Implementations.csproj" />
     <ProjectReference Include="..\Germes.Telegram\Germes.Telegram.csproj" />
     <ProjectReference Include="..\Germes.User.Implementations\Germes.User.Implementations.csproj" />

@@ -1,4 +1,5 @@
-﻿using Germes.Accountant.DataAccess;
+﻿using Germes.Abstractions.Plugins;
+using Germes.Accountant.DataAccess;
 using Germes.Accountant.Domain.Repositories;
 using Germes.Accountant.Domain.Services;
 using Germes.Accountant.Domain.UnitOfWork;
@@ -6,7 +7,7 @@ using Germes.Accountant.Implementations.Plugins;
 using Germes.Accountant.Implementations.Repositories;
 using Germes.Accountant.Implementations.Services;
 using Germes.Accountant.Implementations.UnitOfWork;
-using Germes.Domain.Plugins;
+using Germes.Help.Implementations.Plugins;
 using Germes.User.DataAccess;
 using Germes.User.Domain.Repositories;
 using Germes.User.Domain.Services;
@@ -54,5 +55,10 @@ namespace Germes.Extensions
                         sp.GetRequiredService<AccountantDbContext>().Transactions,
                         sp.GetRequiredService<AccountantDbContext>().Categories))
                 .AddScoped<IAccountantUnitOfWork, AccountantUnitOfWork>();
+
+
+        public static IServiceCollection AddHelpDomain(this IServiceCollection services)
+            => services
+                .AddScoped<IBotPlugin, HelpPlugin>();
     }
 }

@@ -5,7 +5,6 @@ using System.Threading.Tasks;
 using Germes.Abstractions.Models.Results;
 using Germes.Abstractions.Plugins;
 using Germes.Domain.Data;
-using Germes.Domain.Plugins;
 
 namespace Germes.Implementations.Plugins
 {
