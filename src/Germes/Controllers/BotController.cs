@@ -55,26 +55,27 @@ namespace Germes.Controllers
                     Text = msg.Message,
                 },
             };
-            return HandleMessageAsync(update, token);
+            return HandleMessageAsync(update, isFake: true, token);
         }
 
         private async Task InternalHandleMessageAsync(Update update, CancellationToken token)
         {
             var chatId = update.Message.Chat.Id;
-            var res = await HandleMessageAsync(update, token);
+            var res = await HandleMessageAsync(update, isFake: false, token);
             if (res.IsSuccess)
                 await _client.SendTextMessageAsync(chatId, res.Result.Text, cancellationToken: token);
             else
                 await _client.SendTextMessageAsync(chatId, $"Упс, что-то пошло не так...", cancellationToken: token);
         }
 
-        private async Task<OperationResult<BotResult>> HandleMessageAsync(Update update, CancellationToken token)
+        private async Task<OperationResult<BotResult>> HandleMessageAsync(Update update, bool isFake,
+            CancellationToken token)
         {
             var mess = new BotMessage
             {
                 ChatId = update.Message.Chat.Id.ToString(),
                 Text = update.Message.Text,
-                SourceId = TelegramSourceAdapter.SourceId
+                SourceId = isFake ? "Simple" : TelegramSourceAdapter.SourceId
             };
             var res = await _mediator.SendSafe<RequestNewMessage, BotResult>(new RequestNewMessage {Message = mess},
                 token);

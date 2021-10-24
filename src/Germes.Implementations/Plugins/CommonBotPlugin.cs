@@ -10,7 +10,7 @@ namespace Germes.Implementations.Plugins
 {
     public abstract class CommonBotPlugin : IBotPlugin
     {
-        private readonly IPluginCommand[] _commands;
+        protected readonly IPluginCommand[] _commands;
         public abstract bool IsAllow { get; }
 
         protected CommonBotPlugin(params IPluginCommand[] commands)
@@ -23,6 +23,8 @@ namespace Germes.Implementations.Plugins
 
         public Task<PluginResult> Handle(BotMessage message, CancellationToken token)
             => _commands.First(command => command.Check(Normalize(message))).Handle(Normalize(message), token);
+
+        public abstract string GetHelpDescription();
 
         protected virtual BotMessage Normalize(BotMessage message)
         {

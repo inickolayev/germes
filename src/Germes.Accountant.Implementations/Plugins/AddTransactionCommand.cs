@@ -124,5 +124,8 @@ namespace Germes.Accountant.Implementations.Plugins
                 return newDate;
             }
         }
+
+        public override string GetHelpDescription()
+            => $"* \"{CommandTemplate}\" - {AccountantText.AddTransactionDescription}";
     }
 }

@@ -6,7 +6,7 @@ namespace Germes.Help.Implementations.Plugins
     public class HelpPlugin : CommonBotPlugin
     {
         public override bool IsAllow => true;
-
+        
         public HelpPlugin(IServiceProvider serviceProvider)
             : base(
                 new WelcomeCommand(serviceProvider),
@@ -14,5 +14,11 @@ namespace Germes.Help.Implementations.Plugins
             )
         {
         }
+        
+        public override string GetHelpDescription()
+        {
+            throw new NotImplementedException();
+        }
+
     }
 }

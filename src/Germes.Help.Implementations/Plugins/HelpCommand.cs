@@ -1,4 +1,5 @@
 ﻿using System;
+using System.Linq;
 using System.Text;
 using System.Threading;
 using System.Threading.Tasks;
@@ -27,11 +28,13 @@ namespace Germes.Help.Implementations.Plugins
 
         private class HelpCommandHandler : ICommandHandler
         {
+            private readonly IServiceProvider _serviceProvider;
             private readonly IUserService _userService;
             private readonly ISourceAdapterFactory _sourceAdapterFactory;
 
             public HelpCommandHandler(IServiceProvider serviceProvider)
             {
+                _serviceProvider = serviceProvider;
                 _userService = serviceProvider.GetRequiredService<IUserService>();
                 _sourceAdapterFactory = serviceProvider.GetRequiredService<ISourceAdapterFactory>();
             }
@@ -47,15 +50,30 @@ namespace Germes.Help.Implementations.Plugins
                 if (user == null)
                 {
                     var sourceAdapter = _sourceAdapterFactory.GetAdapter(message.SourceId);
-                    var name = await sourceAdapter.GetName(message.ChatId, token);
+                    var name = await sourceAdapter?.GetName(message.ChatId, token);
                     user = await _userService.AddUserAsync(new AddUserRequest {ChatId = chatId, Name = name}, token);
                     result.AppendLine(WelcomeText.WelcomeUser(user.Name));
                 }
-                
-                result.AppendLine(WelcomeText.Help("-"));
+
+                var descriptions = await GetPluginDescriptions(token);
+                result.AppendLine(WelcomeText.Help(descriptions));
 
                 return PluginResult.Success(result.ToString());
             }
+
+            private async Task<string> GetPluginDescriptions(CancellationToken token)
+            {
+                var pluginService = _serviceProvider.GetRequiredService<IPluginService>();
+                var plugins = await pluginService.GetPluginsAsync(token);
+                var descriptions = string.Join("\n\n", 
+                    plugins
+                        .Where(p => p.GetType() != typeof(HelpPlugin))
+                        .Select(p => p.GetHelpDescription()));
+                return descriptions;
+            }
         }
+
+        public override string GetHelpDescription()
+            => throw new NotImplementedException();
     }
 }

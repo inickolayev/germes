@@ -30,5 +30,10 @@ namespace Germes.Accountant.Implementations.Translations
 
         public static string RemainingBalance(decimal balance)
             => $"Остаток по счету: {balance:0} руб.";
+
+        public const string HelpTitle = "Плагин \"Счетовод\"";
+        
+        public const string AddTransactionDescription = "добавить новый расход/приход";
+        public const string GetBalanceDescription = "получить баланс";
     }
 }

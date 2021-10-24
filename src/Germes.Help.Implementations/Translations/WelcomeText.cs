@@ -12,7 +12,9 @@
         public static string Help(string pluginDescriptions)
             => $@"
 Текущие плагины:
+
 {pluginDescriptions}
+
 Если что-то не будет понятно - напишите /help или помощь.
 ";
     }

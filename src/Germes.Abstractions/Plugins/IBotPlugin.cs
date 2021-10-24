@@ -14,5 +14,6 @@ namespace Germes.Abstractions.Plugins
 
         Task<bool> CheckAsync(BotMessage message, CancellationToken token = default);
         Task<PluginResult> Handle(BotMessage message, CancellationToken token = default);
+        string GetHelpDescription();
     }
 }

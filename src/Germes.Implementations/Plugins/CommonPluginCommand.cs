@@ -33,5 +33,7 @@ namespace Germes.Implementations.Plugins
             var commandItems = _commandParser.Parse(message.Text);
             return _commandHandler.Handle(message, commandItems, token);
         }
+
+        public abstract string GetHelpDescription();
     }
 }

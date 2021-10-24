@@ -62,5 +62,8 @@ namespace Germes.Accountant.Implementations.Plugins
                 return PluginResult.Success(result.ToString());
             }
         }
+
+        public override string GetHelpDescription()
+            => $"* \"{CommandTemplate}\" - {AccountantText.GetBalanceDescription}";
     }
 }

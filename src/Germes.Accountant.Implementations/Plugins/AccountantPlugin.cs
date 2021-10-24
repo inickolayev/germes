@@ -23,7 +23,7 @@ namespace Germes.Accountant.Implementations.Plugins
     public class AccountantPlugin : CommonBotPlugin
     {
         public override bool IsAllow => true;
-
+        
         public AccountantPlugin(IServiceProvider serviceProvider)
             : base(
                 new AddTransactionCommand(serviceProvider),
@@ -31,5 +31,13 @@ namespace Germes.Accountant.Implementations.Plugins
             )
         {
         }
+        
+        public override string GetHelpDescription()
+        {
+            var title = AccountantText.HelpTitle;
+            var commandDescription = string.Join("\n", _commands.Select(command => command.GetHelpDescription()));
+            return string.Join("\n", title, commandDescription);
+        }
+
     }
 }

@@ -55,5 +55,8 @@ namespace Germes.Help.Implementations.Plugins
                 return PluginResult.Success(result.ToString());
             }
         }
+
+        public override string GetHelpDescription()
+            => throw new NotImplementedException();
     }
 }

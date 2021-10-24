@@ -10,5 +10,6 @@ namespace Germes.Abstractions.Plugins
     {
         bool Check(BotMessage message);
         Task<PluginResult> Handle(BotMessage message, CancellationToken token);
+        string GetHelpDescription();
     }
 }
